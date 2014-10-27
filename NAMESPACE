@@ -1,0 +1,7 @@
+## exports
+export(initMC)
+export(nextPerm)
+
+
+## dynamic library load
+useDynLib("multicool")
