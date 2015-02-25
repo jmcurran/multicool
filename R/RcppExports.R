@@ -5,6 +5,14 @@ generateCompositions <- function(n) {
     .Call('multicool_generateCompositions', PACKAGE = 'multicool', n)
 }
 
+Stirling2C <- function(n, k) {
+    .Call('multicool_Stirling2C', PACKAGE = 'multicool', n, k)
+}
+
+BellC <- function(n) {
+    .Call('multicool_BellC', PACKAGE = 'multicool', n)
+}
+
 createMCObj <- function(iSet) {
     .Call('multicool_createMCObj', PACKAGE = 'multicool', iSet)
 }

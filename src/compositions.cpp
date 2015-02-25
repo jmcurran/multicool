@@ -47,3 +47,29 @@ List generateCompositions(int n){
 	
 	return A;
 }
+
+// Calculate Stirling numbers of the second kind S2(n, k)
+// [[Rcpp::export]]
+long Stirling2C(int n, int k){
+  if((n == 0 && k == 0) || (n > 0 && k == 1) || (n > 0 && n == k))
+    return 1;
+    
+  if((n == 0 || k == 0)) // n = k = 0 should get caught by the previous if
+    return 0;
+    
+  return k * Stirling2C(n - 1, k) + Stirling2C(n - 1, k - 1);
+}
+
+// Calculate Bell numbers
+// [[Rcpp::export]]
+long BellC(int n){
+  long sum = 0;
+  
+  for(int k = 1; k <= n; k++){
+    sum += Stirling2C(n, k);
+  }
+  
+  return sum;
+}
+
+
