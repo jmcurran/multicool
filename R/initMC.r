@@ -8,8 +8,7 @@ initMC = function(x){
             ## From post by Tony Plate<tplate_at_acm.org>
             tolerance = .Machine$double.eps^0.5
             if(isTRUE(all(abs(x - round(x))<  tolerance))){ ## integer args
-                r = .C("MC", set = as.integer(x), nx = as.integer(length(x)),
-                                                  id = as.integer(id))
+                r = createMCObj(x)
                 mcObj = list(mode = "integer", set = r$set,
                              elements = NULL, length = r$nx,
                              id = r$id)
@@ -20,8 +19,7 @@ initMC = function(x){
                 elements = names(tbl)
                 set = rep(1:length(tbl), tbl)
 
-                r = .C("MC", set = as.integer(set), nx = as.integer(length(set)),
-                                                  id = as.integer(id))
+                r = createMCObj(set)
 
                 mcObj = list(mode = "double", set = r$set, elements = elements,
                              length = r$nx, id = r$id)
@@ -33,9 +31,8 @@ initMC = function(x){
              elements = names(tbl)
              set = rep(1:length(tbl), tbl)
 
-             r = .C("MC", set = as.integer(set), nx = as.integer(length(set)),
-                                                  id = as.integer(id))
-
+             r = createMCObj(set)
+             
              mcObj = list(mode = mode(x), set = r$set, elements = elements,
                           length = r$nx, id = r$id)
              class(mcObj) = "mc"

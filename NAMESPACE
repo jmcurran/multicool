@@ -1,7 +1,3 @@
-## exports
-export(initMC)
-export(nextPerm)
-
-
-## dynamic library load
-useDynLib("multicool")
+useDynLib(multicool)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
