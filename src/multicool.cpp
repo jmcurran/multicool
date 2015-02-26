@@ -301,7 +301,7 @@ NumericVector multinomCoeff(NumericVector x){
     v.at(i) = x[i];
   }
   
-  unsigned long long int u = multinomial::multi<unsigned long long int>(v);
+  unsigned long u = multinomial::multi<unsigned long>(v);
   
   NumericVector r = NumericVector::create(u);
   
