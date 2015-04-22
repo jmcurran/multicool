@@ -7,11 +7,12 @@ Generate all, or a subset, of the integer partitions of an integer n.
 This function will return either all, or a length restricted subset of the integer partitions of an integer n. The method works by considering compositions rather than partions, hence the name. 
 }
 \usage{
-genComp(n, len = TRUE)
+genComp(n, len = TRUE, addZeros = FALSE)
 }
 \arguments{
   \item{n}{A positive non-zero integer}
   \item{len}{Either logical \code{TRUE}, or an integer less than or equal to \code{n}. If the latter form is used then only those partions of length less than or equal to {len} are returned}
+  \item{addZeros}{If true then the empty partitions are added to the list of partitions.}
 }
 \details{
 This function will return all partions, or a subset, of an integer n. It makes no check to see if this is a sensible thing to do. It also does it in a lazy way in that in the restricted case it generates all partitions and then only returns those that satistfy the length constraint. Users are advised to check how many partitions are possible using partition number function which is implemented the \code{P} function in the \pkg{partions} package. Having said this P(50) is approximately 200 thousand, and P(100) around 190 million, so the function should work well for smallish n. 
@@ -36,6 +37,9 @@ This function does not warn the user that the requested set of partitions may be
 \examples{
 ## a small numeric example with all 11 partitions of 6
 genComp(6)
+
+## a small example with the integer partitions of 6 of length 3 with empty partitions added
+genComp(6, 3, TRUE)
 
 ## a larger example - 627 partions of 20, but restricted to those of length 3 or smaller
 genComp(20, 3)
