@@ -1,0 +1,39 @@
+\name{Stirling2}
+\alias{Stirling2}
+\alias{S2}
+\title{
+Compute Stirling numbers of the second kind
+}
+\description{
+This function computes Stirling numbers of the second kind, \eqn{S(n, k)}{S(n, k)}, which count the number of ways of partitioning n distinct objects in to k non-empty sets.
+}
+\usage{
+Stirling2(n, k)
+S2(n, k)
+}
+\arguments{
+  \item{n}{A vector of one or more positive integers}
+  \item{k}{A vector of one or more positive integers}
+}
+\details{
+The implementation on this function is a simple recurrence relation which defines
+\deqn{S(n, k) = kS(n - 1, k), + S(n - 1, k - 1)} for \eqn{k > 0} with the inital conditions \eqn{S(0, 0) = 1} and \eqn{S(n, 0) = S(0, n) = 0}. If \code{n} and \code{n} have different lengths then \code{expand.grid} is used to construct a vector of (n, k) pairs
+}
+\value{
+An vector of Stirling numbers of the second kind
+}
+\references{
+\url{http://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
+}
+\author{James Curran}
+\examples{
+## returns S(6, 3)
+Stirling2(6, 3)
+
+## returns S(6,1), S(6,2), ..., S(6,6)
+S2(6, 1:6)
+
+## returns S(6,1), S(5, 2), S(4, 3)
+S2(6:4, 1:3)
+}
+\keyword{partitions}

@@ -1,0 +1,43 @@
+\name{genComp}
+\alias{genComp}
+\title{
+Generate all, or a subset, of the integer partitions of an integer n.
+}
+\description{
+This function will return either all, or a length restricted subset of the integer partitions of an integer n. The method works by considering compositions rather than partions, hence the name. 
+}
+\usage{
+genComp(n, len = TRUE)
+}
+\arguments{
+  \item{n}{A positive non-zero integer}
+  \item{len}{Either logical \code{TRUE}, or an integer less than or equal to \code{n}. If the latter form is used then only those partions of length less than or equal to {len} are returned}
+}
+\details{
+This function will return all partions, or a subset, of an integer n. It makes no check to see if this is a sensible thing to do. It also does it in a lazy way in that in the restricted case it generates all partitions and then only returns those that satistfy the length constraint. Users are advised to check how many partitions are possible using partition number function which is implemented the \code{P} function in the \pkg{partions} package. Having said this P(50) is approximately 200 thousand, and P(100) around 190 million, so the function should work well for smallish n. 
+}
+\value{
+A list with each list element representing an integer partition
+}
+\references{
+Kelleher, J. (2005), Encoding Partitions As Ascending Compositions, PhD thesis, University College Cork \url{http://jeromekelleher.net/downloads/k06.pdf}.
+
+Kelleher, J. and O'Sullivan, B. (2009), Generating All Partitions: A Comparison Of Two Encodings, \url{http://arxiv.org/abs/0909.2331}. 
+
+Kelleher, J. (2010) Generating Integer Partitions,\url{http://jeromekelleher.net/partitions.php}.
+}
+\author{
+Jerome Kelleher (algorithm and Python version) and James M. Curran (C++ version/R interface)
+}
+\note{
+This function does not warn the user that the requested set of partitions may be very large. In addition, all working is handled entirely in memory, and so this may cause it to crash if the request is execeptionally large.
+}
+
+\examples{
+## a small numeric example with all 11 partitions of 6
+genComp(6)
+
+## a larger example - 627 partions of 20, but restricted to those of length 3 or smaller
+genComp(20, 3)
+}
+\keyword{partitions}

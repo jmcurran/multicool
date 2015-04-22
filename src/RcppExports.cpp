@@ -16,6 +16,37 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Stirling2C
+long Stirling2C(int n, int k);
+RcppExport SEXP multicool_Stirling2C(SEXP nSEXP, SEXP kSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< int >::type n(nSEXP );
+        Rcpp::traits::input_parameter< int >::type k(kSEXP );
+        long __result = Stirling2C(n, k);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// BellC
+long BellC(int n);
+RcppExport SEXP multicool_BellC(SEXP nSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< int >::type n(nSEXP );
+        long __result = BellC(n);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // createMCObj
 List createMCObj(IntegerVector iSet);
 RcppExport SEXP multicool_createMCObj(SEXP iSetSEXP) {
