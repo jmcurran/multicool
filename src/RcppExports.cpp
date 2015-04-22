@@ -9,74 +9,54 @@ using namespace Rcpp;
 List generateCompositions(int n);
 RcppExport SEXP multicool_generateCompositions(SEXP nSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< int >::type n(nSEXP );
-        List __result = generateCompositions(n);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    __result = Rcpp::wrap(generateCompositions(n));
+    return __result;
 END_RCPP
 }
 // createMCObj
 List createMCObj(IntegerVector iSet);
 RcppExport SEXP multicool_createMCObj(SEXP iSetSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< IntegerVector >::type iSet(iSetSEXP );
-        List __result = createMCObj(iSet);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< IntegerVector >::type iSet(iSetSEXP);
+    __result = Rcpp::wrap(createMCObj(iSet));
+    return __result;
 END_RCPP
 }
 // allPermC
 List allPermC(int id);
 RcppExport SEXP multicool_allPermC(SEXP idSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< int >::type id(idSEXP );
-        List __result = allPermC(id);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type id(idSEXP);
+    __result = Rcpp::wrap(allPermC(id));
+    return __result;
 END_RCPP
 }
 // nextPermC
 List nextPermC(int id);
 RcppExport SEXP multicool_nextPermC(SEXP idSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< int >::type id(idSEXP );
-        List __result = nextPermC(id);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type id(idSEXP);
+    __result = Rcpp::wrap(nextPermC(id));
+    return __result;
 END_RCPP
 }
 // multinomCoeff
 NumericVector multinomCoeff(NumericVector x);
 RcppExport SEXP multicool_multinomCoeff(SEXP xSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP );
-        NumericVector __result = multinomCoeff(x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    __result = Rcpp::wrap(multinomCoeff(x));
+    return __result;
 END_RCPP
 }
