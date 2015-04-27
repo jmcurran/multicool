@@ -1,4 +1,4 @@
-genComp = function(n, len = TRUE, addZeros = TRUE){
+genComp = function(n, len = TRUE, addZeros = FALSE){
   regularize = function(x, regLen){
     return(c(x, rep(0, regLen - length(x))))
   }
