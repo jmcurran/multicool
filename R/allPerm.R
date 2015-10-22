@@ -5,9 +5,5 @@ allPerm = function(mcObj){
     r = allPermC(mcObj$id);
     x = unlist(r)
     
-    if(mcObj$mode == "integer"){
-      return(matrix(x, ncol = mcObj$length, byrow = TRUE))
-    }else{
-      return(matrix(mcObj$elements[x], ncol = mcObj$length, byrow = TRUE))
-    }
+    return(matrix(mcObj$elements[x], ncol = mcObj$length, byrow = TRUE))
 }

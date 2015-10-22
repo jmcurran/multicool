@@ -270,6 +270,7 @@ List allPermC(int id){
 	List lResult;
 	
   while(pmc->hasNext()){
+    //pmc->print();
 		lResult.push_back( pmc->getState() );
   }
 
