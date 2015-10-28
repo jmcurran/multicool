@@ -23,8 +23,7 @@ initMC(x)
     \item{elements}{ - if \code{mode} is not "integer" then this contains
       the elements being permuted otherwise \code{NULL}}
     \item{length}{ - the length of the multiset}
-    \item{id}{ - the id of the multiset. This argument is used when the
-      user is permuting more than one multiset}
+    \item{mc}{ - a pointer to the internal C++ Multicool object. Users should not use this unless they really know what they are doing}
     }
 }
 \seealso{

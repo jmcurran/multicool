@@ -10,7 +10,7 @@ nextPerm(mcObj)
 }
 \arguments{
   \item{mcObj}{an S3 object of class \code{mc} which must be created
-  with \code{initPerm}}
+  with \code{initMC}}
 }
 \value{
   either a vector with the next permutation of the multiset or \code{FALSE}
