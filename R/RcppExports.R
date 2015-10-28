@@ -13,18 +13,6 @@ BellC <- function(n) {
     .Call('multicool_BellC', PACKAGE = 'multicool', n)
 }
 
-createMCObj <- function(iSet) {
-    .Call('multicool_createMCObj', PACKAGE = 'multicool', iSet)
-}
-
-allPermC <- function(id) {
-    .Call('multicool_allPermC', PACKAGE = 'multicool', id)
-}
-
-nextPermC <- function(id) {
-    .Call('multicool_nextPermC', PACKAGE = 'multicool', id)
-}
-
 multinomCoeff <- function(x) {
     .Call('multicool_multinomCoeff', PACKAGE = 'multicool', x)
 }

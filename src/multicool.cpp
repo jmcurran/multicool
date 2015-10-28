@@ -46,10 +46,11 @@ class Multicool{
   
   int *m_pnInitialState; // stored so that the current state can be reset to the initial state
   int *m_pnCurrState;
+  
   int m_nLength;
   bool m_bFirst;
-  
-  public:
+
+public:
 	// constructor
   Multicool(IntegerVector x){
 		int nx = (int)x.size();
@@ -94,20 +95,7 @@ class Multicool{
     }
   };
   
-  vector<int> getInitialState(void){
-    /*int ctr;
-    
-    for(ctr = 0; ctr < m_nLength; ctr++){
-      pnSet[ctr] = m_pnInitialState[ctr];
-    } */
-		vector<int> vSet(m_pnInitialState, m_pnInitialState + m_nLength);
-		return vSet;
-  };
-  
-  
-  int getLength(void){
-    return m_nLength;
-  };
+private:
   
   
   void print(void){
@@ -176,6 +164,40 @@ class Multicool{
       y = y->n ;
     }
   }
+
+ vector<int> getState(void){
+		vector<int> vState;
+    
+		for(int ctr = 0; ctr < m_nLength; ctr++)
+			vState.push_back( m_pnCurrState[ctr] );
+
+		return vState;
+	};
+  
+public:
+  
+  List allPerm(void){
+    this->reset();
+    vector<int> set = this->getInitialState();
+    
+    List lResult;
+    
+    while( this->hasNext()){
+      //pmc->print();
+      lResult.push_back( this->getState() );
+    }
+    
+    return lResult;
+  };
+  
+  int getLength(void){
+    return m_nLength;
+  };
+  
+  vector<int> getInitialState(void){
+    vector<int> vSet(m_pnInitialState, m_pnInitialState + m_nLength);
+    return vSet;
+  };
   
   bool hasNext(void){
     item *j;
@@ -209,16 +231,18 @@ class Multicool{
         return false;
       }
     }
-  }
+  };
   
-  vector<int> getState(void){
-		vector<int> vState;
-    
-		for(int ctr = 0; ctr < m_nLength; ctr++)
-			vState.push_back( m_pnCurrState[ctr] );
+  List nextPerm(void){
+    List lhs;
 
-		return vState;
-	};
+    lhs["set"] = as<IntegerVector>(wrap(getState()));
+    lhs["b"] = hasNext() ? 1 : 0;
+    
+    return lhs;
+  };
+  
+  
 };
 
 RCPP_MODULE(Multicool) {
@@ -226,6 +250,11 @@ RCPP_MODULE(Multicool) {
   
   class_<Multicool>( "Multicool")
     .constructor<IntegerVector>("Standard constructor")
+    .method("allPerm", &Multicool::allPerm)
+    .method("set", &Multicool::getInitialState)
+    .method("length", &Multicool::getLength)
+    .method("hasNext", &Multicool::hasNext)
+    .method("nextPerm", &Multicool::nextPerm)
   ;
 }
 
@@ -251,53 +280,6 @@ RCPP_MODULE(Multicool) {
 //		return 0;
 //	}
 
-std::vector<Multicool*> vMCobjList;
-
-// Create a multicool object
-// [[Rcpp::export]]
-List createMCObj(IntegerVector iSet){
-  vMCobjList.push_back(new Multicool(iSet));
-  // Rprintf("vMCobjList %d\n", vMCobjList.size());
-  List lhs;
-  lhs["set"] = iSet;
-  lhs["nx"] = (int)iSet.size();
-  lhs["id"] = (int)vMCobjList.size() - 1;
-      
-  return lhs;
-}
-
-// generate all combinations
-// [[Rcpp::export]]
-List allPermC(int id){
-  Multicool *pmc = vMCobjList[id];
-  
-  pmc->reset();
-  vector<int> set = pmc->getInitialState();
-  
-	List lResult;
-	
-  while(pmc->hasNext()){
-    //pmc->print();
-		lResult.push_back( pmc->getState() );
-  }
-
-	return lResult;
- }
- 
-// next combination
-// [[Rcpp::export]]
-List nextPermC(int id){
-  List lhs;
-  Multicool *pmc = vMCobjList[id];
-	
-	// pmc->print();
-  lhs["set"] = as<IntegerVector>(wrap(pmc->getState()));
-  lhs["b"] = (pmc->hasNext()) ? 1 : 0;
-  
-  
-  return lhs;
-}
-
 // multinomial coefficient
 // [[Rcpp::export]]
 NumericVector multinomCoeff(NumericVector x){
@@ -314,6 +296,5 @@ NumericVector multinomCoeff(NumericVector x){
   NumericVector r = NumericVector::create(u);
   
   return r;
-  
 }
 

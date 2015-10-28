@@ -11,9 +11,9 @@ initMC = function(x){
         elements = as.numeric(names(tbl))
         set = rep(1:length(tbl), tbl)
         
-        r = createMCObj(set)
-        mcObj = list(mode = "integer", set = r$set, elements = elements, 
-                     length = r$nx, id = r$id)
+        r = new(Multicool, set)
+        mcObj = list(mode = "integer", set = r$set(), elements = elements, 
+                     length = r$length(), mc = r)
         
         class(mcObj) = "mc"
         return(mcObj)
@@ -22,10 +22,9 @@ initMC = function(x){
         elements = as.numeric(tbl)
         set = rep(1:length(tbl), tbl)
         
-        r = createMCObj(set)
-        
-        mcObj = list(mode = "double", set = r$set, elements = elements,
-                     length = r$nx, id = r$id)
+        r = new(Multicool, set)
+        mcObj = list(mode = "double", set = r$set(), elements = elements,
+                     length = r$length(), mc = r)
         class(mcObj) = "mc"
         return(mcObj)
       }
@@ -34,10 +33,9 @@ initMC = function(x){
       elements = names(tbl)
       set = rep(1:length(tbl), tbl)
       
-      r = createMCObj(set)
-      
-      mcObj = list(mode = mode(x), set = r$set, elements = elements,
-                   length = r$nx, id = r$id)
+      r = new(Multicool, set)
+      mcObj = list(mode = mode(x), set = r$set(), elements = elements,
+                   length = r$length(), mc = r)
       class(mcObj) = "mc"
       return(mcObj)
     }

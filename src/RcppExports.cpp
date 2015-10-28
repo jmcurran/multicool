@@ -39,39 +39,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// createMCObj
-List createMCObj(IntegerVector iSet);
-RcppExport SEXP multicool_createMCObj(SEXP iSetSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< IntegerVector >::type iSet(iSetSEXP);
-    __result = Rcpp::wrap(createMCObj(iSet));
-    return __result;
-END_RCPP
-}
-// allPermC
-List allPermC(int id);
-RcppExport SEXP multicool_allPermC(SEXP idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< int >::type id(idSEXP);
-    __result = Rcpp::wrap(allPermC(id));
-    return __result;
-END_RCPP
-}
-// nextPermC
-List nextPermC(int id);
-RcppExport SEXP multicool_nextPermC(SEXP idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< int >::type id(idSEXP);
-    __result = Rcpp::wrap(nextPermC(id));
-    return __result;
-END_RCPP
-}
 // multinomCoeff
 NumericVector multinomCoeff(NumericVector x);
 RcppExport SEXP multicool_multinomCoeff(SEXP xSEXP) {
