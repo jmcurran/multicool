@@ -51,7 +51,7 @@ class Multicool{
   
   public:
 	// constructor
-  Multicool(vector<int> x){
+  Multicool(IntegerVector x){
 		int nx = (int)x.size();
 		
     i = (item *)NULL;
@@ -221,6 +221,13 @@ class Multicool{
 	};
 };
 
+RCPP_MODULE(Multicool) {
+  using namespace Rcpp;
+  
+  class_<Multicool>( "Multicool")
+    .constructor<IntegerVector>("Standard constructor")
+  ;
+}
 
 
 //	int test(void){
@@ -249,7 +256,7 @@ std::vector<Multicool*> vMCobjList;
 // Create a multicool object
 // [[Rcpp::export]]
 List createMCObj(IntegerVector iSet){
-  vMCobjList.push_back(new Multicool(as< vector<int> >(iSet)));
+  vMCobjList.push_back(new Multicool(iSet));
   // Rprintf("vMCobjList %d\n", vMCobjList.size());
   List lhs;
   lhs["set"] = iSet;
