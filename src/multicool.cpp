@@ -80,9 +80,9 @@ public:
         i = h;
       }
       
-      Rprintf("Step %d\n--------\n", ctr + 1);
+      /*Rprintf("Step %d\n--------\n", ctr + 1);
       debugPrint();
-      Rprintf("--------\n");
+      Rprintf("--------\n");*/
     }
   };
 	
@@ -231,7 +231,7 @@ public:
     List lResult;
     
     while( this->hasNext()){
-      this->print();
+      //this->print();
       lResult.push_back( this->getState() );
     }
     
@@ -252,9 +252,9 @@ public:
     item *t;
     item *s;
     
-    Rprintf("\n--------\n");
+    /*Rprintf("\n--------\n");
     debugPrint();
-    Rprintf("--------\n");
+    Rprintf("--------\n");*/
     
     if(m_bFirst){
       setState(h);

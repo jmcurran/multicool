@@ -28,7 +28,7 @@ multinom depends on C++ code written by Dave Barber which can be found at \url{h
 A single integer representing the multinomial coefficient for the given multiset, or given set of multiplicities.
 }
 \references{
-\url{http://home.comcast.net/~tamivox/dave/multinomial/index.html}
+\url{http://tamivox.org/dave/multinomial/code.html}
 }
 \author{
 James M. Curran, Dave Barber
@@ -53,10 +53,11 @@ multinom(x, counts = TRUE)
 ## The error in the integer based answer is obvious.
 ## The error using floating point is not, but from Maple is
 ## 0.705057123232160000e+10
-## Thanks to Lev Daskevskiy for calling my attention to this.
-x = c(12,11,8,8,6,5)
+## Thanks to Lev Dashevskiy for calling my attention to this.
+\dontrun{x = c(12,11,8,8,6,5)
 multinom(x, counts = TRUE, useDouble = FALSE)
 multinom(x, counts = TRUE, useDouble = TRUE)
+}
 }
 \keyword{ combinations }
 \keyword{ permutations }
