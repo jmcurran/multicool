@@ -10,7 +10,7 @@
 #include <R.h>
 
 // Author: Dave Barber
-// Code downloaded from from http://home.comcast.net/~tamivox/dave/multinomial/index.html
+// Code downloaded from from http://tamivox.org/dave/multinomial/code.html
 // There are no terms and conditions attached to the distribution of this code.
 
 namespace multinomial {

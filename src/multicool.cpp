@@ -79,6 +79,10 @@ public:
       if(ctr+1 == 2){
         i = h;
       }
+      
+      Rprintf("Step %d\n--------\n", ctr + 1);
+      debugPrint();
+      Rprintf("--------\n");
     }
   };
 	
@@ -97,6 +101,50 @@ public:
   
 private:
   
+  void debugPrint(void){
+    char strPtr[] = {'h', 't', 'i'};
+    
+    for(auto ctr = 0; ctr  < 3; ctr++){
+      item *p; 
+      switch(ctr){
+        case 0:
+          p = h;
+          break;
+        case 1:
+          p = t;
+          break;
+        case 2:
+          p = i;
+          break;
+      }
+      
+      if(p != NULL){
+        Rprintf("item %c->v: %d\n",strPtr[ctr] , p->v);
+        if(p->n != NULL){
+          Rprintf("item %c->n: %p\n",strPtr[ctr] , p->n);
+        }else{
+          Rprintf("item %c->n: NULL\n",strPtr[ctr]);
+        }
+      }else{
+        Rprintf("%c = NULL\n",strPtr[ctr] );
+      }
+    }
+    
+    Rprintf("m_nLength %d\n", m_nLength);
+    Rprintf("m_bFirst %d\n", (int)m_bFirst);
+    
+    Rprintf("m_pnInitialState: ");
+    for(auto ctr = 0; ctr < m_nLength; ctr++){
+      Rprintf("%d ", m_pnInitialState[ctr]);
+    }
+    Rprintf("\n");
+    
+    Rprintf("m_pnCurrState: ");
+    for(auto ctr = 0; ctr < m_nLength; ctr++){
+      Rprintf("%d ", m_pnCurrState[ctr]);
+    }
+    Rprintf("\n");
+  }
   
   void print(void){
     Rprintf("item h->v: %d\n", h->v);
@@ -183,7 +231,7 @@ public:
     List lResult;
     
     while( this->hasNext()){
-      //pmc->print();
+      this->print();
       lResult.push_back( this->getState() );
     }
     
@@ -203,6 +251,10 @@ public:
     item *j;
     item *t;
     item *s;
+    
+    Rprintf("\n--------\n");
+    debugPrint();
+    Rprintf("--------\n");
     
     if(m_bFirst){
       setState(h);
@@ -282,7 +334,7 @@ RCPP_MODULE(Multicool) {
 
 // multinomial coefficient
 // [[Rcpp::export]]
-NumericVector multinomCoeff(NumericVector x){
+NumericVector multinomCoeff(NumericVector x, bool useDouble){
   int nx = x.size();
   multinomial::SVI v(nx);
   int i;
@@ -291,10 +343,15 @@ NumericVector multinomCoeff(NumericVector x){
     v.at(i) = x[i];
   }
   
+  if(useDouble){
+    double u = multinomial::multi<double>(v);
+    NumericVector r = NumericVector::create(u);
+  
+    return r;
+  }//else
   unsigned long u = multinomial::multi<unsigned long>(v);
-  
   NumericVector r = NumericVector::create(u);
-  
+    
   return r;
 }
 

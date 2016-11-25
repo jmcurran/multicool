@@ -25,7 +25,7 @@ Kelleher, J. (2005), Encoding Partitions As Ascending Compositions, PhD thesis, 
 
 Kelleher, J. and O'Sullivan, B. (2009), Generating All Partitions: A Comparison Of Two Encodings, \url{http://arxiv.org/abs/0909.2331}. 
 
-Kelleher, J. (2010) Generating Integer Partitions,\url{http://jeromekelleher.net/partitions.php}.
+Kelleher, J. (2010) Generating Integer Partitions,\url{http://jeromekelleher.net/tag/integer-partitions.html}.
 }
 \author{
 Jerome Kelleher (algorithm and Python version) and James M. Curran (C++ version/R interface)
