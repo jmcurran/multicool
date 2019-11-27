@@ -15,7 +15,7 @@ multinom = function(x, counts = FALSE, useDouble = FALSE){
   }
   
 
-  r = .Call('multicool_multinomCoeff', PACKAGE = 'multicool', u, useDouble)
+  r = .Call('_multicool_multinomCoeff', PACKAGE = 'multicool', u, useDouble)
   
   return(r)
 }

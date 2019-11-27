@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -228,14 +229,14 @@ public:
     this->reset();
     vector<int> set = this->getInitialState();
     
-    List lResult;
+    auto lResult = vector<vector<int>>();
     
     while( this->hasNext()){
-      //this->print();
+      if (lResult.size() % 1000 == 0) Rcpp::checkUserInterrupt();
       lResult.push_back( this->getState() );
     }
     
-    return lResult;
+    return wrap(lResult);
   };
   
   int getLength(void){
