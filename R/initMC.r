@@ -1,3 +1,37 @@
+#' Initialise the permutation object
+#' 
+#' This function initialises the permutation object. It must be called before
+#' \code{nextPerm} can be called
+#' 
+#' 
+#' @param x a vector of integers, reals, logicals or characters
+#' @return a object of class \code{mc} which is a list containing elements
+#' \itemize{ 
+#' \item{mode}{ - the mode of the original data in \code{x}, "integer",
+#' "double", or \code{mode(x)}}
+#' \item{set}{ - either the multiset being permuted if \code{mode} is "integer" or
+#' a set of integers corresponding to the elements of the multiset}
+#' \item {elements}{ - if \code{mode} is not "integer" then this contains the
+#' elements being permuted otherwise \code{NULL} }
+#' \item {length} { - the length of the multiset }
+#' \item {mc}{ - a pointer to the internal C++ Multicool object. Users
+#' should not use this unless they really know what they are doing}
+#' }
+#' @author James M. Curran
+#' @seealso nextPerm
+#' @examples
+#' 
+#' x = c(1,1,2,2)
+#' m1 = initMC(x)
+#' m1
+#' 
+#' ## a non-integer example
+#' 
+#' x = rep(letters[1:4],c(2,1,2,2))
+#' m2 = initMC(x)
+#' m2
+#' 
+#' @export initMC
 initMC = function(x){
   if(length(x) > 1){
     r = NULL

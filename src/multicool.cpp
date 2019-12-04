@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -33,6 +32,8 @@ then multicool < input.txt will output the cool-lex order for the permutations o
 etc */
 
 // C++ version: James M. Curran (j.curran@auckland.ac.nz)
+
+// [[Rcpp::plugins("cpp11")]]
 
 class Multicool{
   struct list_el {

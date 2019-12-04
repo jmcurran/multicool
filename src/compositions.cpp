@@ -9,7 +9,7 @@ using namespace std;
 List generateCompositions(int n){
 	// Adapted from Python code and algorithm by
 	// Jerome Kelleher (c) 2009
-	// http://jeromekelleher.net/partitions.php
+	// http://jeromekelleher.net/category/combinatorics.html
 	List A;
 	vector<int> a(n+1);
 	

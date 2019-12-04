@@ -2,18 +2,18 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 generateCompositions <- function(n) {
-    .Call('multicool_generateCompositions', PACKAGE = 'multicool', n)
+    .Call('_multicool_generateCompositions', PACKAGE = 'multicool', n)
 }
 
 Stirling2C <- function(n, k) {
-    .Call('multicool_Stirling2C', PACKAGE = 'multicool', n, k)
+    .Call('_multicool_Stirling2C', PACKAGE = 'multicool', n, k)
 }
 
 BellC <- function(n) {
-    .Call('multicool_BellC', PACKAGE = 'multicool', n)
+    .Call('_multicool_BellC', PACKAGE = 'multicool', n)
 }
 
 multinomCoeff <- function(x, useDouble) {
-    .Call('multicool_multinomCoeff', PACKAGE = 'multicool', x, useDouble)
+    .Call('_multicool_multinomCoeff', PACKAGE = 'multicool', x, useDouble)
 }
 

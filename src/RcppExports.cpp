@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // generateCompositions
 List generateCompositions(int n);
-RcppExport SEXP multicool_generateCompositions(SEXP nSEXP) {
+RcppExport SEXP _multicool_generateCompositions(SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,7 +18,7 @@ END_RCPP
 }
 // Stirling2C
 long Stirling2C(int n, int k);
-RcppExport SEXP multicool_Stirling2C(SEXP nSEXP, SEXP kSEXP) {
+RcppExport SEXP _multicool_Stirling2C(SEXP nSEXP, SEXP kSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -30,7 +30,7 @@ END_RCPP
 }
 // BellC
 long BellC(int n);
-RcppExport SEXP multicool_BellC(SEXP nSEXP) {
+RcppExport SEXP _multicool_BellC(SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -41,7 +41,7 @@ END_RCPP
 }
 // multinomCoeff
 NumericVector multinomCoeff(NumericVector x, bool useDouble);
-RcppExport SEXP multicool_multinomCoeff(SEXP xSEXP, SEXP useDoubleSEXP) {
+RcppExport SEXP _multicool_multinomCoeff(SEXP xSEXP, SEXP useDoubleSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -50,4 +50,20 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(multinomCoeff(x, useDouble));
     return rcpp_result_gen;
 END_RCPP
+}
+
+RcppExport SEXP _rcpp_module_boot_Multicool();
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_multicool_generateCompositions", (DL_FUNC) &_multicool_generateCompositions, 1},
+    {"_multicool_Stirling2C", (DL_FUNC) &_multicool_Stirling2C, 2},
+    {"_multicool_BellC", (DL_FUNC) &_multicool_BellC, 1},
+    {"_multicool_multinomCoeff", (DL_FUNC) &_multicool_multinomCoeff, 2},
+    {"_rcpp_module_boot_Multicool", (DL_FUNC) &_rcpp_module_boot_Multicool, 0},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_multicool(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
