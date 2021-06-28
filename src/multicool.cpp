@@ -254,9 +254,9 @@ public:
     item *t;
     item *s;
     
-    /*Rprintf("\n--------\n");
-    debugPrint();
-    Rprintf("--------\n");*/
+    // Rprintf("\n--------\n");
+    // debugPrint();
+    // Rprintf("--------\n");
     
     if(m_bFirst){
       setState(h);
@@ -290,8 +290,8 @@ public:
   List nextPerm(void){
     List lhs;
 
-    lhs["set"] = as<IntegerVector>(wrap(getState()));
     lhs["b"] = hasNext() ? 1 : 0;
+    lhs["set"] = as<IntegerVector>(wrap(getState()));
     
     return lhs;
   };

@@ -24,7 +24,7 @@ x = c(1,1,2,2)
 m1 = initMC(x)
 
 for(i in 1:6){
-  cat(paste(paste(nextPerm(m1),collapse=","),"\\n"))
+  cat(paste(paste(nextPerm(m1),collapse=","),"\n"))
 }
 
 ## an example with letters
