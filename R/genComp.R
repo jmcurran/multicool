@@ -27,14 +27,13 @@
 #' @author Jerome Kelleher (algorithm and Python version) and James M. Curran
 #' (C++ version/R interface)
 #' @references Kelleher, J. (2005), Encoding Partitions As Ascending
-#' Compositions, PhD thesis, University College Cork
-#' \url{http://jeromekelleher.net/downloads/k06.pdf}.
+#' Compositions, PhD thesis, University College Cork.
 #' 
 #' Kelleher, J. and O'Sullivan, B. (2009), Generating All Partitions: A
-#' Comparison Of Two Encodings, \url{http://arxiv.org/abs/0909.2331}.
+#' Comparison Of Two Encodings, \url{https://arxiv.org/abs/0909.2331}.
 #' 
 #' Kelleher, J. (2010) Generating Integer
-#' Partitions,\url{http://jeromekelleher.net/tag/integer-partitions.html}.
+#' Partitions,\url{https://jeromekelleher.net/tag/integer-partitions.html}.
 #' @keywords partitions
 #' @examples
 #' 

@@ -40,7 +40,7 @@ S2(6:4, 1:3)
 
 }
 \references{
-\url{http://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
+\url{https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
 }
 \author{
 James Curran

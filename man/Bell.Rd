@@ -28,7 +28,7 @@ B(1:6)
 
 }
 \references{
-\url{http://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
+\url{https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
 }
 \seealso{
 Stirling2

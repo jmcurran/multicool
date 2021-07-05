@@ -16,7 +16,7 @@
 #' @return An vector of Stirling numbers of the second kind
 #' @author James Curran
 #' @references
-#' \url{http://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
+#' \url{https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
 #' @keywords partitions
 #' @examples
 #' 
@@ -72,7 +72,7 @@ S2 = function(n, k){Stirling2(n, k)}
 #' @author James Curran
 #' @seealso Stirling2
 #' @references
-#' \url{http://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
+#' \url{https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
 #' @keywords partitions
 #' @examples
 #' 
