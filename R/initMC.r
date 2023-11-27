@@ -6,15 +6,15 @@
 #' 
 #' @param x a vector of integers, reals, logicals or characters
 #' @return a object of class \code{mc} which is a list containing elements
-#' \itemize{ 
+#' \itemize{
 #' \item{mode}{ - the mode of the original data in \code{x}, "integer",
 #' "double", or \code{mode(x)}}
 #' \item{set}{ - either the multiset being permuted if \code{mode} is "integer" or
 #' a set of integers corresponding to the elements of the multiset}
-#' \item {elements}{ - if \code{mode} is not "integer" then this contains the
+#' \item{elements}{ - if \code{mode} is not "integer" then this contains the
 #' elements being permuted otherwise \code{NULL} }
-#' \item {length} { - the length of the multiset }
-#' \item {mc}{ - a pointer to the internal C++ Multicool object. Users
+#' \item{length} { - the length of the multiset }
+#' \item{mc}{ - a pointer to the internal C++ Multicool object. Users
 #' should not use this unless they really know what they are doing}
 #' }
 #' @author James M. Curran

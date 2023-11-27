@@ -31,8 +31,9 @@
 #' 
 #' @export allPerm
 allPerm = function(mcObj){
-    if(class(mcObj) != "mc")
+    if(!is(mcObj, "mc")){
       stop("mcObject must be of class mc")
+    }
         
     r = mcObj$mc$allPerm()
     x = unlist(r)

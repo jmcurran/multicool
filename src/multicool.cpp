@@ -123,7 +123,7 @@ private:
       if(p != NULL){
         Rprintf("item %c->v: %d\n",strPtr[ctr] , p->v);
         if(p->n != NULL){
-          Rprintf("item %c->n: %p\n",strPtr[ctr] , p->n);
+          Rprintf("item %c->n: %p\n",strPtr[ctr] , (void*)(p->n));
         }else{
           Rprintf("item %c->n: NULL\n",strPtr[ctr]);
         }
