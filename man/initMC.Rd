@@ -18,7 +18,7 @@ a object of class \code{mc} which is a list containing elements
 a set of integers corresponding to the elements of the multiset}
 \item{elements}{ - if \code{mode} is not "integer" then this contains the
 elements being permuted otherwise \code{NULL} }
-\item{length} { - the length of the multiset }
+\item{length}{ - the length of the multiset }
 \item{mc}{ - a pointer to the internal C++ Multicool object. Users
 should not use this unless they really know what they are doing}
 }
