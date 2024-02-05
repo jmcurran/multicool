@@ -55,6 +55,8 @@ Stirling2 = function(n, k){
   return(result)
 }
 
+#' @describeIn Stirling2 Compute Stirling numbers of the second kind
+#' @export S2
 S2 = function(n, k){Stirling2(n, k)}
 
 
@@ -96,4 +98,6 @@ Bell = function(n){
   return(result)
 }
 
+#' @describeIn Bell Compute the Bell numbers 
+#' @export B
 B = function(n){Bell(n)}

@@ -6,6 +6,8 @@
 \title{Compute the Bell numbers}
 \usage{
 Bell(n)
+
+B(n)
 }
 \arguments{
 \item{n}{A vector of one or more non-zero positive integers}
@@ -18,6 +20,11 @@ This function computes the Bell numbers, which is the summ of Stirling
 numbers of the second kind, \eqn{S(n, k)}{S(n, k)}, over \eqn{k = 1,\ldots,
 n}{k}, i.e.  \deqn{B_n = \sum_{k=1}^{n}S(n, k),n \ge 1}
 }
+\section{Functions}{
+\itemize{
+\item \code{B()}: Compute the Bell numbers
+
+}}
 \examples{
 
 ## returns B(6)

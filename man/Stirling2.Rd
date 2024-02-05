@@ -6,6 +6,8 @@
 \title{Compute Stirling numbers of the second kind}
 \usage{
 Stirling2(n, k)
+
+S2(n, k)
 }
 \arguments{
 \item{n}{A vector of one or more positive integers}
@@ -27,6 +29,11 @@ with the inital conditions \eqn{S(0, 0) = 1} and \eqn{S(n, 0) = S(0, n) =
 0}. If \code{n} and \code{n} have different lengths then \code{expand.grid}
 is used to construct a vector of (n, k) pairs
 }
+\section{Functions}{
+\itemize{
+\item \code{S2()}: Compute Stirling numbers of the second kind
+
+}}
 \examples{
 
 ## returns S(6, 3)
