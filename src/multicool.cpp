@@ -1,17 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <iostream>
 #include <vector>
-#include "multinomial.h"
-
 #include <Rcpp.h>
 
 using namespace Rcpp;
 using namespace std;
 
 
-/* Adapted from Aaron Williams multicool.c 
+/* Adapted from Aaron Williams multicool.c
 Author: Aaron Williams (haron@uvic.ca)
 Website: http://www.math.mcgill.ca/haron/
 
@@ -21,10 +15,10 @@ This program outputs the permutations of any multiset in cool-lex order.
 The program stores a single permutation in a singly-linked list, and then
 each successive permutation in O(1)-time while using O(1) additional pointers.
 
-Input is read from stdin as follows: n e_1 e_2 ... e_n where e_i <= e_{i+1} for all i. 
+Input is read from stdin as follows: n e_1 e_2 ... e_n where e_i <= e_{i+1} for all i.
 
 For example, if input.txt is a file containing the following single line
-6 1 1 2 3 3 3 
+6 1 1 2 3 3 3
 then multicool < input.txt will output the cool-lex order for the permutations of {1,1,2,3,3,3}:
 333211
 133321
@@ -33,277 +27,144 @@ etc */
 
 // C++ version: James M. Curran (j.curran@auckland.ac.nz)
 
-// [[Rcpp::plugins("cpp11")]]
-
 class Multicool{
-  struct list_el {
+  struct item {
     int v;
-    struct list_el * n;
+    item *n;
   };
-  typedef struct list_el item;
-  
-  item *h;
-  item *t;
-  item *i;
-  
-  int *m_pnInitialState; // stored so that the current state can be reset to the initial state
-  int *m_pnCurrState;
-  
-  int m_nLength;
+
+  // storage for the linked list. It is never resized after construction, so
+  // pointers into it stay valid. Copying is disabled because a copy's pointers
+  // would still point into this object's storage.
+  vector<item> m_vNodes;
+  item *h; // head of the list
+  item *i; // Williams' i pointer
+
+  vector<int> m_vInitialState;
+  vector<int> m_vCurrState;
   bool m_bFirst;
 
-public:
-	// constructor
-  Multicool(IntegerVector x){
-		int nx = (int)x.size();
-		
-    i = (item *)NULL;
-    h = NULL;
-    m_pnInitialState = new int[nx];
-    m_pnCurrState = new int[nx];
-    m_nLength = nx;
-    m_bFirst = true;
-    
-    for(int ctr = 0; ctr < nx; ctr++){
-      t = new item;
-      t->v = INT_MAX;
-      t->v = x[ctr];
-      m_pnCurrState[ctr] = x[ctr];
-      m_pnInitialState[ctr] = x[ctr];
-      t->n = h;
-      h = t;
-      
-      if(h->n && h->n->v > h->v){
-        // std::cout << "Error" << std::endl;
-        // should programme some sensible action here but I don't know what
-      }
-      
-      if(ctr+1 == 2){
-        i = h;
-      }
-      
-      /*Rprintf("Step %d\n--------\n", ctr + 1);
-      debugPrint();
-      Rprintf("--------\n");*/
-    }
-  };
-	
-	//destructor
-  ~Multicool(void){
-    // Rprintf("Destructor called\n");
-    delete [] m_pnInitialState;
-    delete [] m_pnCurrState;
-    
-    while(t){
-      item *next = t->n;
-      delete t;
-      t = next;
-    }
-  };
-  
-private:
-  
-  void debugPrint(void){
-    char strPtr[] = {'h', 't', 'i'};
-    
-    for(auto ctr = 0; ctr  < 3; ctr++){
-      item *p; 
-      switch(ctr){
-        case 0:
-          p = h;
-          break;
-        case 1:
-          p = t;
-          break;
-        case 2:
-          p = i;
-          break;
-      }
-      
-      if(p != NULL){
-        Rprintf("item %c->v: %d\n",strPtr[ctr] , p->v);
-        if(p->n != NULL){
-          Rprintf("item %c->n: %p\n",strPtr[ctr] , (void*)(p->n));
-        }else{
-          Rprintf("item %c->n: NULL\n",strPtr[ctr]);
-        }
-      }else{
-        Rprintf("%c = NULL\n",strPtr[ctr] );
-      }
-    }
-    
-    Rprintf("m_nLength %d\n", m_nLength);
-    Rprintf("m_bFirst %d\n", (int)m_bFirst);
-    
-    Rprintf("m_pnInitialState: ");
-    for(auto ctr = 0; ctr < m_nLength; ctr++){
-      Rprintf("%d ", m_pnInitialState[ctr]);
-    }
-    Rprintf("\n");
-    
-    Rprintf("m_pnCurrState: ");
-    for(auto ctr = 0; ctr < m_nLength; ctr++){
-      Rprintf("%d ", m_pnCurrState[ctr]);
-    }
-    Rprintf("\n");
-  }
-  
-  void print(void){
-    Rprintf("item h->v: %d\n", h->v);
-    Rprintf("item t->v: %d\n", t->v);
-    Rprintf("item i->v: %d\n", i->v);
-    Rprintf("m_nLength %d\n", m_nLength);
-    Rprintf("m_bFirst %d\n", (int)m_bFirst);
-    
-    int i;
-    
-    Rprintf("m_pnInitialState: ");
-    for(i = 0; i < m_nLength; i++){
-      Rprintf("%d ", m_pnInitialState[i]);
-    }
-    Rprintf("\n");
-    
-    Rprintf("m_pnCurrState: ");
-    for(i = 0; i < m_nLength; i++){
-      Rprintf("%d ", m_pnCurrState[i]);
-    }
-    Rprintf("\n");
-  }
-  
-   void reset(void){
-    delete [] m_pnCurrState;
-    
-    while(t){
-      item *next = t->n;
-      delete t;
-      t = next;
-    }
-    
-    i = (item *)NULL;
-    h = NULL;
-    m_pnCurrState = new int[m_nLength];
-    m_bFirst = true;
-    
-    for(int ctr = 0; ctr < m_nLength; ctr++){
-      t = new item;
-      t->v = INT_MAX;
-      t->v = m_pnInitialState[ctr];
-      m_pnCurrState[ctr] = m_pnInitialState[ctr];
-      t->n = h;
-      h = t;
-      
-      if(h->n && h->n->v > h->v){
-        //std::cout << "Error" << std::endl;
-        // should programme some sensible action here but I don't know what
-      }
-      
-      if(ctr+1 == 2){
-        i = h;
-      }
-    }
-    
-  }
-  
-  void setState(item *b){
-    item *y;
-    y = b;
+  void setState(void){
     int ctr = 0;
-    
-    while(y) {
-      m_pnCurrState[ctr++] =  y->v;
-      y = y->n ;
-    }
+
+    for(item *y = h; y; y = y->n)
+      m_vCurrState[ctr++] = y->v;
   }
 
- vector<int> getState(void){
-		vector<int> vState;
-    
-		for(int ctr = 0; ctr < m_nLength; ctr++)
-			vState.push_back( m_pnCurrState[ctr] );
-
-		return vState;
-	};
-  
 public:
-  
-  List allPerm(void){
-    this->reset();
-    vector<int> set = this->getInitialState();
-    
-    auto lResult = vector<vector<int>>();
-    
-    while( this->hasNext()){
-      if (lResult.size() % 1000 == 0) Rcpp::checkUserInterrupt();
-      lResult.push_back( this->getState() );
+  Multicool(vector<int> x) :
+    m_vNodes(x.size()), h(NULL), i(NULL),
+    m_vInitialState(x), m_vCurrState(x), m_bFirst(true){
+    int nx = (int)x.size();
+
+    // hasNext() dereferences i, which is only set when there are at least two elements
+    if(nx < 2)
+      Rcpp::stop("a multiset must have at least two elements to be permuted");
+
+    for(int ctr = 1; ctr < nx; ctr++){
+      if(x[ctr] < x[ctr - 1])
+        Rcpp::stop("the elements of the multiset must be in non-decreasing order");
     }
-    
-    return wrap(lResult);
+
+    // each element is pushed onto the front of the list, so the list runs
+    // from the largest element to the smallest
+    for(int ctr = 0; ctr < nx; ctr++){
+      item *t = &m_vNodes[ctr];
+      t->v = x[ctr];
+      t->n = h;
+      h = t;
+
+      if(ctr == 1){
+        i = h;
+      }
+    }
   };
-  
+
+  Multicool(const Multicool &) = delete;
+  Multicool & operator=(const Multicool &) = delete;
+
+  // returns every permutation as a row of an nPerms x length matrix. nPerms
+  // is the multinomial coefficient, which the R code computes exactly.
+  IntegerMatrix allPerm(int nPerms){
+    // iterate over a fresh copy so the state used by nextPerm() is not disturbed
+    Multicool iter(m_vInitialState);
+    int nLength = getLength();
+    IntegerMatrix result(nPerms, nLength);
+    int row = 0;
+
+    while(iter.hasNext()){
+      if(row >= nPerms)
+        Rcpp::stop("more permutations were generated than expected");
+
+      if(row % 1000 == 0)
+        Rcpp::checkUserInterrupt();
+
+      for(int col = 0; col < nLength; col++)
+        result(row, col) = iter.m_vCurrState[col];
+
+      row++;
+    }
+
+    if(row != nPerms)
+      Rcpp::stop("fewer permutations were generated than expected");
+
+    return result;
+  };
+
   int getLength(void){
-    return m_nLength;
+    return (int)m_vInitialState.size();
   };
-  
+
   vector<int> getInitialState(void){
-    vector<int> vSet(m_pnInitialState, m_pnInitialState + m_nLength);
-    return vSet;
+    return m_vInitialState;
   };
-  
+
   bool hasNext(void){
     item *j;
     item *t;
     item *s;
-    
-    // Rprintf("\n--------\n");
-    // debugPrint();
-    // Rprintf("--------\n");
-    
+
     if(m_bFirst){
-      setState(h);
+      setState();
       m_bFirst = false;
       return true;
-    }else{
-      j = i->n;
-      
-      if(j->n || j->v < h->v) { 
-        if (j->n && i->v >= j->n->v) {
-          s = j; 
-        } else {
-          s = i;
-        }
-        t = s->n;
-        s->n = t->n;
-        t->n = h;
-        if(t->v < h->v) {
-          i = t;
-        }
-        j = i->n;
-        h = t;
-        setState(h);
-        return true;
-      }else{
-        return false;
-      }
     }
-  };
-  
-  List nextPerm(void){
-    List lhs;
 
-    lhs["b"] = hasNext() ? 1 : 0;
-    lhs["set"] = as<IntegerVector>(wrap(getState()));
-    
-    return lhs;
+    j = i->n;
+
+    if(j->n || j->v < h->v) {
+      if (j->n && i->v >= j->n->v) {
+        s = j;
+      } else {
+        s = i;
+      }
+      t = s->n;
+      s->n = t->n;
+      t->n = h;
+      if(t->v < h->v) {
+        i = t;
+      }
+      h = t;
+      setState();
+      return true;
+    }
+
+    return false;
   };
-  
-  
+
+  List nextPerm(void){
+    bool b = hasNext();
+
+    return List::create(_["b"] = b,
+                        _["set"] = IntegerVector(m_vCurrState.begin(), m_vCurrState.end()));
+  };
 };
 
 RCPP_MODULE(Multicool) {
   using namespace Rcpp;
-  
+
   class_<Multicool>( "Multicool")
-    .constructor<IntegerVector>("Standard constructor")
+    .constructor< vector<int> >("Standard constructor")
     .method("allPerm", &Multicool::allPerm)
     .method("set", &Multicool::getInitialState)
     .method("length", &Multicool::getLength)
@@ -311,49 +172,3 @@ RCPP_MODULE(Multicool) {
     .method("nextPerm", &Multicool::nextPerm)
   ;
 }
-
-
-//	int test(void){
-//		int *i  = new int[4];
-//		i[0] = 1;
-//		i[1] = 1;
-//		i[2] = 2;
-//		i[3] = 2;
-//
-//		Multicool m(i, 4);
-//
-//		while(m.hasNext()){
-//			m.getState(i);
-//
-//			for(int ctr = 0; ctr < 4; ctr++){
-//				std::cout << i[ctr];
-//			}
-//			std::cout << std::endl;
-//		}
-//
-//		return 0;
-//	}
-
-// multinomial coefficient
-// [[Rcpp::export]]
-NumericVector multinomCoeff(NumericVector x, bool useDouble){
-  int nx = x.size();
-  multinomial::SVI v(nx);
-  int i;
-  
-  for(i = 0; i < nx; i++){
-    v.at(i) = x[i];
-  }
-  
-  if(useDouble){
-    double u = multinomial::multi<double>(v);
-    NumericVector r = NumericVector::create(u);
-  
-    return r;
-  }//else
-  unsigned long u = multinomial::multi<unsigned long>(v);
-  NumericVector r = NumericVector::create(u);
-    
-  return r;
-}
-

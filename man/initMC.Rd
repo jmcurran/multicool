@@ -7,16 +7,17 @@
 initMC(x)
 }
 \arguments{
-\item{x}{a vector of integers, reals, logicals or characters}
+\item{x}{a vector of integers, reals, logicals or characters, with at least
+two elements and no missing values}
 }
 \value{
 a object of class \code{mc} which is a list containing elements
 \item{mode}{ - the mode of the original data in \code{x}, "integer",
 "double", or \code{mode(x)}}
-\item{set}{ - either the multiset being permuted if \code{mode} is "integer" or
-a set of integers corresponding to the elements of the multiset}
-\item{elements}{ - if \code{mode} is not "integer" then this contains the
-elements being permuted otherwise \code{NULL} }
+\item{set}{ - a multiset of integer codes \code{1, ..., k}, one code for
+each unique element of \code{x}}
+\item{elements}{ - the unique elements of \code{x}, so that
+\code{elements[set]} recovers the multiset being permuted}
 \item{length}{ - the length of the multiset }
 \item{mc}{ - a pointer to the internal C++ Multicool object. Users
 should not use this unless they really know what they are doing}
@@ -36,6 +37,11 @@ m1
 x = rep(letters[1:4],c(2,1,2,2))
 m2 = initMC(x)
 m2
+
+## a real-valued example
+
+m3 = initMC(c(1.5, 1.5, 2.5))
+allPerm(m3)
 
 }
 \seealso{

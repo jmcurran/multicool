@@ -10,12 +10,14 @@ Stirling2(n, k)
 S2(n, k)
 }
 \arguments{
-\item{n}{A vector of one or more positive integers}
+\item{n}{A vector of one or more non-negative integers}
 
-\item{k}{A vector of one or more positive integers}
+\item{k}{A vector of one or more non-negative integers}
 }
 \value{
-An vector of Stirling numbers of the second kind
+A vector of Stirling numbers of the second kind, as exact big
+integers of class \code{bigz} from the \pkg{gmp} package. Use
+\code{as.numeric} to convert them to double precision if required.
 }
 \description{
 This function computes Stirling numbers of the second kind, \eqn{S(n,
@@ -26,14 +28,9 @@ objects in to k non-empty sets.
 The implementation on this function is a simple recurrence relation which
 defines \deqn{S(n, k) = kS(n - 1, k), + S(n - 1, k - 1)} for \eqn{k > 0}
 with the inital conditions \eqn{S(0, 0) = 1} and \eqn{S(n, 0) = S(0, n) =
-0}. If \code{n} and \code{n} have different lengths then \code{expand.grid}
+0}. If \code{n} and \code{k} have different lengths then \code{expand.grid}
 is used to construct a vector of (n, k) pairs
 }
-\section{Functions}{
-\itemize{
-\item \code{S2()}: Compute Stirling numbers of the second kind
-
-}}
 \examples{
 
 ## returns S(6, 3)
@@ -45,9 +42,15 @@ S2(6, 1:6)
 ## returns S(6,1), S(5, 2), S(4, 3)
 S2(6:4, 1:3)
 
+## the values are exact, even when they are very large
+S2(100, 50)
+
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
+}
+\seealso{
+\code{\link[gmp]{as.bigz}}
 }
 \author{
 James Curran

@@ -9,12 +9,13 @@ genComp(n, len = TRUE, addZeros = FALSE)
 \arguments{
 \item{n}{A positive non-zero integer}
 
-\item{len}{Either logical \code{TRUE}, or an integer less than or equal to
-\code{n}. If the latter form is used then only those partions of length less
-than or equal to len are returned}
+\item{len}{Either logical \code{TRUE}, or a positive integer. If the latter
+form is used then only those partions of length less than or equal to len
+are returned. If \code{len} is greater than or equal to \code{n} then all
+partitions are returned.}
 
-\item{addZeros}{If true then the empty partitions are added to the list of
-partitions.}
+\item{addZeros}{If true then each partition is padded with zeros to length
+\code{len}, or to length \code{n} if \code{len} is \code{TRUE}.}
 }
 \value{
 A list with each list element representing an integer partition

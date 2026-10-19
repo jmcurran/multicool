@@ -14,11 +14,12 @@
 #' around 190 million, so the function should work well for smallish n.
 #' 
 #' @param n A positive non-zero integer
-#' @param len Either logical \code{TRUE}, or an integer less than or equal to
-#' \code{n}. If the latter form is used then only those partions of length less
-#' than or equal to len are returned
-#' @param addZeros If true then the empty partitions are added to the list of
-#' partitions.
+#' @param len Either logical \code{TRUE}, or a positive integer. If the latter
+#' form is used then only those partions of length less than or equal to len
+#' are returned. If \code{len} is greater than or equal to \code{n} then all
+#' partitions are returned.
+#' @param addZeros If true then each partition is padded with zeros to length
+#' \code{len}, or to length \code{n} if \code{len} is \code{TRUE}.
 #' @return A list with each list element representing an integer partition
 #' @note This function does not warn the user that the requested set of
 #' partitions may be very large. In addition, all working is handled entirely
@@ -48,31 +49,30 @@
 #' 
 #' @export genComp
 genComp = function(n, len = TRUE, addZeros = FALSE){
-  regularize = function(x, regLen){
-    return(c(x, rep(0, regLen - length(x))))
+  isCount = function(x){
+    is.numeric(x) && length(x) == 1 && !is.na(x) && 
+      abs(x - round(x)) < .Machine$double.eps^0.5 && x >= 1
   }
-  if(len & is.logical(len)){
-    
-    l = generateCompositions(n)
-    if(addZeros)
-      l = lapply(l, regularize, regLen = n)
-    return(l)
-    
-  }else if(is.numeric(len) & len <= n) {
-    
-    constraintFn = function(l){
-      if(length(l) <= len)
-        return(TRUE)
-      else
-        return(FALSE)
-    }
-    
-    l = generateCompositions(n)
-    l = l[sapply(l, constraintFn)]
-    
-    if(addZeros)
-      l = lapply(l, regularize, regLen = len)
-    
-    return(l)
+  
+  if(!isCount(n))
+    stop("n must be a single positive integer")
+  n = round(n)
+  
+  if(isTRUE(len)){
+    len = n
+  }else if(isCount(len)){
+    len = round(len)
+  }else{
+    stop("len must be TRUE or a single positive integer")
   }
+  
+  l = generateCompositions(n)
+  
+  if(len < n)
+    l = l[lengths(l) <= len]
+  
+  if(addZeros)
+    l = lapply(l, function(x){c(x, rep(0, len - length(x)))})
+  
+  return(l)
 }

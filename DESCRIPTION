@@ -1,16 +1,18 @@
 Package: multicool
 Type: Package
 Title: Permutations of Multisets in Cool-Lex Order
-Version: 1.0.1
-Date: 2024-02-05
-Author: James Curran, Aaron Williams, Jerome Kelleher, Dave Barber
-Maintainer: James Curran <j.curran@auckland.ac.nz>
-Description: A set of tools to permute multisets without loops or hash tables and to generate integer partitions. The permutation functions are based on C code from Aaron Williams. Cool-lex order is similar to colexicographical order. The algorithm is described in Williams, A. Loopless Generation of Multiset Permutations by Prefix Shifts. SODA 2009, Symposium on Discrete Algorithms, New York, United States. The permutation code is distributed without restrictions. The code for stable and efficient computation of multinomial coefficients comes from Dave Barber. The code can be download from <http://tamivox.org/dave/multinomial/index.html> and is distributed without conditions. The package also generates the integer partitions of a positive, non-zero integer n. The C++ code for this is based on Python code from Jerome Kelleher which can be found here <https://jeromekelleher.net/category/combinatorics.html>. The C++ code and Python code are distributed without conditions.
+Version: 1.0.1.002
+Authors@R: c(
+    person("James", "Curran", email = "j.curran@auckland.ac.nz", role = c("aut", "cre")),
+    person("Aaron", "Williams", role = "aut"),
+    person("Jerome", "Kelleher", role = "aut"))
+Description: A set of tools to permute multisets without loops or hash tables and to generate integer partitions. The permutation functions are based on C code from Aaron Williams. Cool-lex order is similar to colexicographical order. The algorithm is described in Williams, A. Loopless Generation of Multiset Permutations by Prefix Shifts. SODA 2009, Symposium on Discrete Algorithms, New York, United States. The permutation code is distributed without restrictions. Multinomial coefficients, Stirling numbers of the second kind and Bell numbers are computed exactly using the 'gmp' package. The package also generates the integer partitions of a positive, non-zero integer n. The C++ code for this is based on Python code from Jerome Kelleher which can be found here <https://jeromekelleher.net/category/combinatorics.html>. The C++ code and Python code are distributed without conditions.
 URL: https://github.com/jmcurran/multicool
 BugReports: https://github.com/jmcurran/multicool/issues
 Encoding: UTF-8
 License: GPL-2
 Depends: methods, Rcpp (>= 0.11.2)
+Imports: gmp
 LinkingTo: Rcpp
 RcppModules: Multicool
-RoxygenNote: 7.2.3
+Config/roxygen2/version: 8.0.0

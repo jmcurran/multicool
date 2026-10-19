@@ -1,3 +1,33 @@
+## Returns a list, named by n, of the rows S(n, 0), ..., S(n, n) as exact
+## bigz values for each of the requested values of n. All the rows are built
+## in one pass of the recurrence S(r, j) = j S(r - 1, j) + S(r - 1, j - 1),
+## so the cost is O(max(n)^2) big integer operations.
+stirling2Rows = function(n){
+  wanted = sort(unique(n))
+  rows = vector("list", length(wanted))
+  names(rows) = wanted
+  
+  row = gmp::as.bigz(1) ## S(0, 0)
+  if(0 %in% wanted)
+    rows[["0"]] = row
+  
+  if(max(wanted) >= 1){
+    for(r in 1:max(wanted)){
+      padded = c(row, gmp::as.bigz(0))
+      row = c(gmp::as.bigz(0), (1:r) * padded[2:(r + 1)] + padded[1:r])
+      
+      if(r %in% wanted)
+        rows[[as.character(r)]] = row
+    }
+  }
+  
+  return(rows)
+}
+
+isWholeNumber = function(x){
+  is.numeric(x) && !anyNA(x) && all(abs(x - round(x)) < .Machine$double.eps^0.5)
+}
+
 #' Compute Stirling numbers of the second kind
 #' 
 #' This function computes Stirling numbers of the second kind, \eqn{S(n,
@@ -7,14 +37,16 @@
 #' The implementation on this function is a simple recurrence relation which
 #' defines \deqn{S(n, k) = kS(n - 1, k), + S(n - 1, k - 1)} for \eqn{k > 0}
 #' with the inital conditions \eqn{S(0, 0) = 1} and \eqn{S(n, 0) = S(0, n) =
-#' 0}. If \code{n} and \code{n} have different lengths then \code{expand.grid}
+#' 0}. If \code{n} and \code{k} have different lengths then \code{expand.grid}
 #' is used to construct a vector of (n, k) pairs
-#' 
-#' @aliases Stirling2 S2
-#' @param n A vector of one or more positive integers
-#' @param k A vector of one or more positive integers
-#' @return An vector of Stirling numbers of the second kind
+#'
+#' @param n A vector of one or more non-negative integers
+#' @param k A vector of one or more non-negative integers
+#' @return A vector of Stirling numbers of the second kind, as exact big
+#' integers of class \code{bigz} from the \pkg{gmp} package. Use
+#' \code{as.numeric} to convert them to double precision if required.
 #' @author James Curran
+#' @seealso \code{\link[gmp]{as.bigz}}
 #' @references
 #' \url{https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind#Recurrence_relation}
 #' @keywords partitions
@@ -29,10 +61,16 @@
 #' ## returns S(6,1), S(5, 2), S(4, 3)
 #' S2(6:4, 1:3)
 #' 
+#' ## the values are exact, even when they are very large
+#' S2(100, 50)
+#' 
 #' @export Stirling2
 Stirling2 = function(n, k){
-  if(any(n < 0) || any(k < 0))
-    stop("n and k must be positive integers, n >= 0, k >= 0")
+  if(!isWholeNumber(n) || !isWholeNumber(k) || any(n < 0) || any(k < 0))
+    stop("n and k must be non-negative integers, n >= 0, k >= 0")
+  
+  n = round(n)
+  k = round(k)
   
   nN = length(n)
   nK = length(k)
@@ -47,16 +85,19 @@ Stirling2 = function(n, k){
     }
   }
   
-  result = rep(0, nN)
+  rows = stirling2Rows(n)
+  result = gmp::as.bigz(rep(0, nN))
+  
   for(r in 1:nN){
-    result[r] = Stirling2C(n[r], k[r])
+    if(k[r] <= n[r])
+      result[r] = rows[[as.character(n[r])]][k[r] + 1]
   }
   
   return(result)
 }
 
-#' @describeIn Stirling2 Compute Stirling numbers of the second kind
-#' @export S2
+#' @rdname Stirling2
+#' @export
 S2 = function(n, k){Stirling2(n, k)}
 
 
@@ -68,9 +109,10 @@ S2 = function(n, k){Stirling2(n, k)}
 #' n}{k}, i.e.  \deqn{B_n = \sum_{k=1}^{n}S(n, k),n \ge 1}
 #' 
 #' 
-#' @aliases Bell B
 #' @param n A vector of one or more non-zero positive integers
-#' @return An vector of Bell numbers
+#' @return A vector of Bell numbers, as exact big integers of class
+#' \code{bigz} from the \pkg{gmp} package. Use \code{as.numeric} to convert
+#' them to double precision if required.
 #' @author James Curran
 #' @seealso Stirling2
 #' @references
@@ -86,18 +128,21 @@ S2 = function(n, k){Stirling2(n, k)}
 #' 
 #' @export Bell
 Bell = function(n){
-  if(any(n <=0))
-    stop("n must be greater than or equal to 1")
+  if(!isWholeNumber(n) || any(n < 1))
+    stop("n must be an integer greater than or equal to 1")
+  
+  n = round(n)
+  rows = stirling2Rows(n)
   
   nN = length(n)
-  result = rep(0, nN)
+  result = gmp::as.bigz(rep(0, nN))
   
   for(r in 1:nN)
-    result[r] = sum(Stirling2(n[r], 1:n[r]))
+    result[r] = sum(rows[[as.character(n[r])]])
   
   return(result)
 }
 
-#' @describeIn Bell Compute the Bell numbers 
-#' @export B
+#' @rdname Bell
+#' @export
 B = function(n){Bell(n)}

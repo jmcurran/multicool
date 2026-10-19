@@ -5,11 +5,7 @@
 #' elements \eqn{x_1, x_2, \ldots, x_k} with associate counts (or
 #' multiplicities) of \eqn{n_1, n_2, \ldots, n_k}, then this function returns
 #' \deqn{\frac{n!}{n_1!n_2!\ldots n_k!}}{n!/(n_1!n_2!\ldots n_k!)} where \eqn{n
-#' = \sum_{i=1}{k}n_i}{n = n_1 + n_2 + \cdots + n_k}.
-#' 
-#' multinom depends on C++ code written by Dave Barber which can be found at
-#' \url{http://tamivox.org/dave/multinomial/code.html}. The code may require
-#' the STL algorithm library to be included in order to compile it.
+#' = \sum_{i=1}^{k}n_i}{n = n_1 + n_2 + \cdots + n_k}.
 #' 
 #' @param x Either a multiset (with one or more potentially non-unique
 #' elements), or if \code{counts} is \code{TRUE} a set of counts of the unique
@@ -19,16 +15,14 @@
 #' are greater than, or equal to zero.
 #' @param counts if \code{counts} is TRUE, then this means x is the set of
 #' counts \eqn{n_1, n_2, \ldots, n_k} rather than the set itself
-#' @param useDouble if \code{useDouble} is TRUE then the computation will be
-#' done using double precision floating point arithmetic. This option was added
-#' because the internal code cannot handle integer overflow. The double
-#' precision code will may a result that is closer to the truth for large
-#' values, but this is not guaranteed. Ideally something like the GMP library
-#' should be used, but this is not a priority at this point in time.
-#' @return A single integer representing the multinomial coefficient for the
-#' given multiset, or given set of multiplicities.
-#' @author James M. Curran, Dave Barber
-#' @references \url{http://tamivox.org/dave/multinomial/code.html}
+#' @param useDouble if \code{useDouble} is TRUE then the result is converted
+#' to a double precision number, which is only exact up to
+#' \eqn{2^{53}}{2^53}. Otherwise the exact result is returned.
+#' @return The multinomial coefficient for the given multiset, or given set of
+#' multiplicities. If \code{useDouble} is \code{FALSE} (the default) this is an
+#' exact big integer of class \code{bigz} from the \pkg{gmp} package, otherwise
+#' it is a double.
+#' @author James M. Curran
 #' @keywords combinations permutations multinomial
 #' @examples
 #' 
@@ -45,17 +39,15 @@
 #' multinom(x, counts = TRUE)
 #' 
 #' 
-#' ## An example of integer overflow. x is a vector of counts
+#' ## An example of a large coefficient. x is a vector of counts
 #' ## c(12,11,8,8,6,5). The true answer from Maple is
 #' ## 11,324,718,121,789,252,764,532,876,767,840,000
-#' ## The error in the integer based answer is obvious.
-#' ## The error using floating point is not, but from Maple is
-#' ## 0.705057123232160000e+10
+#' ## The default exact computation gives this. Converting to double
+#' ## precision only keeps the first 15 or so significant digits.
 #' ## Thanks to Lev Dashevskiy for calling my attention to this.
-#' \dontrun{x = c(12,11,8,8,6,5)
-#' multinom(x, counts = TRUE, useDouble = FALSE)
+#' x = c(12,11,8,8,6,5)
+#' multinom(x, counts = TRUE)
 #' multinom(x, counts = TRUE, useDouble = TRUE)
-#' }
 #' 
 #' @export multinom
 multinom = function(x, counts = FALSE, useDouble = FALSE){
@@ -71,11 +63,15 @@ multinom = function(x, counts = FALSE, useDouble = FALSE){
     if(any(!is.wholenumber(x)) || any(x < 0))
       stop("if counts == TRUE then all elements of x must be integer and >= 0")
     
-    u = x
+    u = round(x)
   }
   
-
-  r = .Call('_multicool_multinomCoeff', PACKAGE = 'multicool', u, useDouble)
+  ## n! / (n_1! n_2! ... n_k!) is always a whole number, so integer
+  ## division is exact
+  r = gmp::factorialZ(sum(u)) %/% prod(gmp::factorialZ(u))
+  
+  if(useDouble)
+    return(as.numeric(r))
   
   return(r)
 }

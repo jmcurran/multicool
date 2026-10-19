@@ -32,11 +32,24 @@
 #' @export allPerm
 allPerm = function(mcObj){
     if(!is(mcObj, "mc")){
-      stop("mcObject must be of class mc")
+      stop("mcObj must be of class mc")
     }
         
-    r = mcObj$mc$allPerm()
-    x = unlist(r)
-    
-    return(matrix(mcObj$elements[x], ncol = mcObj$length, byrow = TRUE))
+    ## the number of permutations is the multinomial coefficient of the
+    ## multiplicities, which lets the C++ code fill a matrix of the right size
+    nPerms = multinom(mcObj$set)
+    if(nPerms > .Machine$integer.max)
+      stop("there are too many permutations (", as.character(nPerms),
+           ") to return them all")
+
+    x = mcObj$mc$allPerm(as.integer(as.numeric(nPerms)))
+
+    ## setting dim() rather than calling matrix() avoids another copy of
+    ## what can be a very large result
+    r = mcObj$elements[x]
+    if(is.factor(r))
+      r = as.character(r)
+    dim(r) = dim(x)
+
+    return(r)
 }

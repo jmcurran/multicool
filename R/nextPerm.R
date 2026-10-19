@@ -7,7 +7,10 @@
 #' @param mcObj an S3 object of class \code{mc} which must be created with
 #' \code{initMC}
 #' @return either a vector with the next permutation of the multiset or
-#' \code{FALSE} when all permutations have been returned
+#' \code{FALSE} when all permutations have been returned. Because a permutation
+#' always has at least two elements, \code{isFALSE(nextPerm(m))} detects the end
+#' even when the multiset is logical. Calling \code{allPerm} does not change
+#' the position of \code{nextPerm}.
 #' @author James M. Curran
 #' @seealso nextPerm
 #' @examples
@@ -28,6 +31,10 @@
 #' 
 #' @export nextPerm
 nextPerm = function(mcObj){
+  if(!is(mcObj, "mc")){
+    stop("mcObj must be of class mc")
+  }
+
   r = mcObj$mc$nextPerm()
   
   if(r$b){
