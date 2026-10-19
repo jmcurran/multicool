@@ -51,7 +51,8 @@ initMC = function(x){
     ## From post by Tony Plate<tplate_at_acm.org>
     tolerance = .Machine$double.eps^0.5
     if(all(abs(x - round(x)) < tolerance)){
-      x = round(x)
+      if(!is.integer(x))
+        x = round(x)
       mode = "integer"
     }else{
       mode = "double"

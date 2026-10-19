@@ -1,4 +1,4 @@
-# multicool 1.0.1.002
+# multicool 1.0.1.003
 
 ## Breaking changes
 
@@ -28,7 +28,13 @@
 * `genComp()` is much faster for larger `n`. The time taken previously grew
   quadratically with the number of partitions (about 100 seconds for
   `n = 50`).
-* `allPerm()` builds its result matrix directly, using less memory.
+* `allPerm()` is 10 to 30 times faster and uses much less memory. It writes
+  the elements straight into the result matrix in C++. In the permutation
+  benchmarks from <https://stackoverflow.com/questions/22569176>, it now
+  takes 1.4 to 1.9 times as long as single-threaded 'RcppAlgos' (before,
+  15 to 54 times as long), and 1.0 to 1.5 times as long as 'arrangements'.
+* `initMC()` keeps integer input as integer, so `allPerm()` returns an
+  integer matrix for integer input.
 * `nextPerm()` checks that its argument is an `mc` object.
 * Native routines are now registered, and documentation and `NAMESPACE` are
   generated with roxygen2.

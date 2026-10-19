@@ -84,31 +84,17 @@ public:
   Multicool & operator=(const Multicool &) = delete;
 
   // returns every permutation as a row of an nPerms x length matrix. nPerms
-  // is the multinomial coefficient, which the R code computes exactly.
-  IntegerMatrix allPerm(int nPerms){
-    // iterate over a fresh copy so the state used by nextPerm() is not disturbed
-    Multicool iter(m_vInitialState);
-    int nLength = getLength();
-    IntegerMatrix result(nPerms, nLength);
-    int row = 0;
-
-    while(iter.hasNext()){
-      if(row >= nPerms)
-        Rcpp::stop("more permutations were generated than expected");
-
-      if(row % 1000 == 0)
-        Rcpp::checkUserInterrupt();
-
-      for(int col = 0; col < nLength; col++)
-        result(row, col) = iter.m_vCurrState[col];
-
-      row++;
+  // is the multinomial coefficient, which the R code computes exactly. If
+  // elements is an integer, double, logical or character vector, the matrix
+  // holds elements[code] for each code 1..k, otherwise it holds the codes.
+  SEXP allPerm(int nPerms, SEXP elements){
+    switch(TYPEOF(elements)){
+      case INTSXP:  return fillPerms<INTSXP>(nPerms, elements);
+      case REALSXP: return fillPerms<REALSXP>(nPerms, elements);
+      case LGLSXP:  return fillPerms<LGLSXP>(nPerms, elements);
+      case STRSXP:  return fillPerms<STRSXP>(nPerms, elements);
+      default:      return fillPerms<INTSXP>(nPerms, R_NilValue);
     }
-
-    if(row != nPerms)
-      Rcpp::stop("fewer permutations were generated than expected");
-
-    return result;
   };
 
   int getLength(void){
@@ -120,15 +106,68 @@ public:
   };
 
   bool hasNext(void){
+    if(m_bFirst){
+      m_bFirst = false;
+    }else if(!advance()){
+      return false;
+    }
+
+    setState();
+    return true;
+  };
+
+  List nextPerm(void){
+    bool b = hasNext();
+
+    return List::create(_["b"] = b,
+                        _["set"] = IntegerVector(m_vCurrState.begin(), m_vCurrState.end()));
+  };
+
+private:
+  // writes every permutation into a matrix, walking the list straight into
+  // the output rather than copying each state first. With no elements the
+  // codes themselves are written.
+  template <int RTYPE>
+  SEXP fillPerms(int nPerms, SEXP elements){
+    // iterate over a fresh copy so the state used by nextPerm() is not disturbed
+    Multicool iter(m_vInitialState);
+    bool useCodes = Rf_isNull(elements);
+    Vector<RTYPE> vElements = useCodes ? Vector<RTYPE>(0) : Vector<RTYPE>(elements);
+    Matrix<RTYPE> result = no_init(nPerms, getLength());
+    R_xlen_t nRows = nPerms;
+    int row = 0;
+
+    do{
+      if(row >= nPerms)
+        Rcpp::stop("more permutations were generated than expected");
+
+      if(row % 10000 == 0)
+        Rcpp::checkUserInterrupt();
+
+      // the matrix is column-major, so element (row, col) is at row + col * nRows
+      R_xlen_t pos = row;
+      for(item *y = iter.h; y; y = y->n, pos += nRows){
+        if(useCodes)
+          result[pos] = y->v;
+        else
+          result[pos] = vElements[y->v - 1];
+      }
+
+      row++;
+    }while(iter.advance());
+
+    if(row != nPerms)
+      Rcpp::stop("fewer permutations were generated than expected");
+
+    return result;
+  };
+
+  // moves the list on to the next permutation without copying the state.
+  // Returns false when there are no more permutations.
+  bool advance(void){
     item *j;
     item *t;
     item *s;
-
-    if(m_bFirst){
-      setState();
-      m_bFirst = false;
-      return true;
-    }
 
     j = i->n;
 
@@ -145,18 +184,10 @@ public:
         i = t;
       }
       h = t;
-      setState();
       return true;
     }
 
     return false;
-  };
-
-  List nextPerm(void){
-    bool b = hasNext();
-
-    return List::create(_["b"] = b,
-                        _["set"] = IntegerVector(m_vCurrState.begin(), m_vCurrState.end()));
   };
 };
 

@@ -1,7 +1,7 @@
 Package: multicool
 Type: Package
 Title: Permutations of Multisets in Cool-Lex Order
-Version: 1.0.1.002
+Version: 1.0.1.003
 Authors@R: c(
     person("James", "Curran", email = "j.curran@auckland.ac.nz", role = c("aut", "cre")),
     person("Aaron", "Williams", role = "aut"),

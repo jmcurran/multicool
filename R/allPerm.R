@@ -42,13 +42,24 @@ allPerm = function(mcObj){
       stop("there are too many permutations (", as.character(nPerms),
            ") to return them all")
 
-    x = mcObj$mc$allPerm(as.integer(as.numeric(nPerms)))
+    nPerms = as.integer(as.numeric(nPerms))
 
-    ## setting dim() rather than calling matrix() avoids another copy of
-    ## what can be a very large result
-    r = mcObj$elements[x]
-    if(is.factor(r))
-      r = as.character(r)
+    elements = mcObj$elements
+    if(is.factor(elements))
+      elements = as.character(elements)
+
+    ## for plain integer, double, logical and character vectors the C++ code
+    ## writes the elements straight into the result
+    if(is.null(attributes(elements)) &&
+       (is.integer(elements) || is.double(elements) ||
+        is.logical(elements) || is.character(elements)))
+      return(mcObj$mc$allPerm(nPerms, elements))
+
+    ## otherwise (e.g. classed or complex vectors) the C++ code returns the
+    ## codes 1..k and they are mapped here. Setting dim() rather than calling
+    ## matrix() avoids another copy of what can be a very large result
+    x = mcObj$mc$allPerm(nPerms, NULL)
+    r = elements[x]
     dim(r) = dim(x)
 
     return(r)
