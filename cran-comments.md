@@ -9,8 +9,8 @@ NEWS.md for details.
 
 * Local: Windows 11, R 4.6.1
 * win-builder: R-devel
-* macOS builder (mac.r-project.org): R-release
-* R-hub (GitHub Actions): Ubuntu, R-devel
+* R-hub (GitHub Actions), R-devel: Ubuntu Linux, macOS (x86_64),
+  macOS (arm64), Windows
 
 ## R CMD check results
 
@@ -18,7 +18,8 @@ NEWS.md for details.
 
 * Possibly misspelled words in DESCRIPTION: O'Sullivan
 
-  This is a surname in a reference (Kelleher and O'Sullivan, 2009).
+  This is a surname in a reference (Kelleher and O'Sullivan, 2009). This
+  note appears on win-builder only; the local and R-hub checks are clean.
 
 ## Reverse dependencies
 
