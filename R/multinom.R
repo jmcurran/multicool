@@ -15,13 +15,16 @@
 #' are greater than, or equal to zero.
 #' @param counts if \code{counts} is TRUE, then this means x is the set of
 #' counts \eqn{n_1, n_2, \ldots, n_k} rather than the set itself
-#' @param useDouble if \code{useDouble} is TRUE then the result is converted
-#' to a double precision number, which is only exact up to
-#' \eqn{2^{53}}{2^53}. Otherwise the exact result is returned.
+#' @param useDouble kept for backwards compatibility, and no longer has any
+#' effect. The coefficient is always computed exactly, and returned as a
+#' double unless \code{exact} is \code{TRUE}.
+#' @param exact if \code{TRUE} the exact result is returned as a big integer
+#' of class \code{bigz} from the \pkg{gmp} package.
 #' @return The multinomial coefficient for the given multiset, or given set of
-#' multiplicities. If \code{useDouble} is \code{FALSE} (the default) this is an
-#' exact big integer of class \code{bigz} from the \pkg{gmp} package, otherwise
-#' it is a double.
+#' multiplicities. By default this is a double: the exact value rounded to
+#' double precision, so it is exact up to \eqn{2^{53}}{2^53} and correct to
+#' about 15 significant digits beyond that. If \code{exact} is \code{TRUE}
+#' it is an exact \code{bigz}.
 #' @author James M. Curran
 #' @keywords combinations permutations multinomial
 #' @examples
@@ -42,15 +45,15 @@
 #' ## An example of a large coefficient. x is a vector of counts
 #' ## c(12,11,8,8,6,5). The true answer from Maple is
 #' ## 11,324,718,121,789,252,764,532,876,767,840,000
-#' ## The default exact computation gives this. Converting to double
-#' ## precision only keeps the first 15 or so significant digits.
+#' ## exact = TRUE gives this. The default double precision result only
+#' ## keeps the first 15 or so significant digits.
 #' ## Thanks to Lev Dashevskiy for calling my attention to this.
 #' x = c(12,11,8,8,6,5)
 #' multinom(x, counts = TRUE)
-#' multinom(x, counts = TRUE, useDouble = TRUE)
-#' 
+#' multinom(x, counts = TRUE, exact = TRUE)
+#'
 #' @export multinom
-multinom = function(x, counts = FALSE, useDouble = FALSE){
+multinom = function(x, counts = FALSE, useDouble = FALSE, exact = FALSE){
   
   u = NULL
   
@@ -70,8 +73,8 @@ multinom = function(x, counts = FALSE, useDouble = FALSE){
   ## division is exact
   r = gmp::factorialZ(sum(u)) %/% prod(gmp::factorialZ(u))
   
-  if(useDouble)
-    return(as.numeric(r))
-  
-  return(r)
+  if(exact)
+    return(r)
+
+  return(as.numeric(r))
 }

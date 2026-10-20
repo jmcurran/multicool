@@ -8,8 +8,9 @@ using namespace std;
 // [[Rcpp::export(rng = false)]]
 List generateCompositions(int n){
 	// Adapted from Python code and algorithm by
-	// Jerome Kelleher (c) 2009
-	// https://jeromekelleher.net/category/combinatorics.html
+	// Jerome Kelleher (c) 2009, described in Kelleher and O'Sullivan (2009)
+	// https://doi.org/10.48550/arXiv.0909.2331 and (archived)
+	// https://web.archive.org/web/20260423220351/https://jeromekelleher.net/generating-integer-partitions.html
 	if(n < 1)
 	  Rcpp::stop("n must be a positive integer");
 

@@ -42,9 +42,13 @@ isWholeNumber = function(x){
 #'
 #' @param n A vector of one or more non-negative integers
 #' @param k A vector of one or more non-negative integers
-#' @return A vector of Stirling numbers of the second kind, as exact big
-#' integers of class \code{bigz} from the \pkg{gmp} package. Use
-#' \code{as.numeric} to convert them to double precision if required.
+#' @param exact if \code{TRUE} the exact results are returned as big integers
+#' of class \code{bigz} from the \pkg{gmp} package.
+#' @return A vector of Stirling numbers of the second kind. They are always
+#' computed exactly. By default they are returned as doubles, so they are
+#' exact up to \eqn{2^{53}}{2^53} and correct to about 15 significant digits
+#' beyond that. If \code{exact} is \code{TRUE} they are exact \code{bigz}
+#' values.
 #' @author James Curran
 #' @seealso \code{\link[gmp]{as.bigz}}
 #' @references
@@ -61,11 +65,12 @@ isWholeNumber = function(x){
 #' ## returns S(6,1), S(5, 2), S(4, 3)
 #' S2(6:4, 1:3)
 #' 
-#' ## the values are exact, even when they are very large
+#' ## exact = TRUE gives exact values, even when they are very large
 #' S2(100, 50)
-#' 
+#' S2(100, 50, exact = TRUE)
+#'
 #' @export Stirling2
-Stirling2 = function(n, k){
+Stirling2 = function(n, k, exact = FALSE){
   if(!isWholeNumber(n) || !isWholeNumber(k) || any(n < 0) || any(k < 0))
     stop("n and k must be non-negative integers, n >= 0, k >= 0")
   
@@ -92,13 +97,16 @@ Stirling2 = function(n, k){
     if(k[r] <= n[r])
       result[r] = rows[[as.character(n[r])]][k[r] + 1]
   }
-  
-  return(result)
+
+  if(exact)
+    return(result)
+
+  return(as.numeric(result))
 }
 
 #' @rdname Stirling2
 #' @export
-S2 = function(n, k){Stirling2(n, k)}
+S2 = function(n, k, exact = FALSE){Stirling2(n, k, exact)}
 
 
 
@@ -110,9 +118,11 @@ S2 = function(n, k){Stirling2(n, k)}
 #' 
 #' 
 #' @param n A vector of one or more non-zero positive integers
-#' @return A vector of Bell numbers, as exact big integers of class
-#' \code{bigz} from the \pkg{gmp} package. Use \code{as.numeric} to convert
-#' them to double precision if required.
+#' @param exact if \code{TRUE} the exact results are returned as big integers
+#' of class \code{bigz} from the \pkg{gmp} package.
+#' @return A vector of Bell numbers. As with \code{\link{Stirling2}}, they
+#' are computed exactly and returned as doubles by default, or as exact
+#' \code{bigz} values if \code{exact} is \code{TRUE}.
 #' @author James Curran
 #' @seealso Stirling2
 #' @references
@@ -125,9 +135,12 @@ S2 = function(n, k){Stirling2(n, k)}
 #' 
 #' ## returns B(1), B(2), ..., B(6)
 #' B(1:6)
-#' 
+#'
+#' ## the exact value of B(50)
+#' Bell(50, exact = TRUE)
+#'
 #' @export Bell
-Bell = function(n){
+Bell = function(n, exact = FALSE){
   if(!isWholeNumber(n) || any(n < 1))
     stop("n must be an integer greater than or equal to 1")
   
@@ -139,10 +152,13 @@ Bell = function(n){
   
   for(r in 1:nN)
     result[r] = sum(rows[[as.character(n[r])]])
-  
-  return(result)
+
+  if(exact)
+    return(result)
+
+  return(as.numeric(result))
 }
 
 #' @rdname Bell
 #' @export
-B = function(n){Bell(n)}
+B = function(n, exact = FALSE){Bell(n, exact)}

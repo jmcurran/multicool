@@ -12,13 +12,15 @@
   through permutations much faster, while only holding `n` of them in
   memory. For example, `nextPerm(m, 1000)` costs about 0.016 microseconds per
   permutation, the same as `allPerm()`. The default `n = 1` works as before.
+* `multinom()`, `Stirling2()`/`S2()` and `Bell()`/`B()` are now computed
+  exactly using the 'gmp' package, and have a new argument `exact`. By
+  default they still return doubles, now correct to double precision rather
+  than silently overflowing. With `exact = TRUE` they return exact big
+  integers of class `bigz`. The `useDouble` argument of `multinom()` is kept
+  for backwards compatibility but no longer has any effect.
 
-## Breaking changes
+## Changes in behaviour
 
-* `multinom()`, `Stirling2()`/`S2()` and `Bell()`/`B()` now return exact big
-  integers of class `bigz` from the 'gmp' package, instead of doubles that
-  silently overflowed or lost precision. Use `as.numeric()` to convert them.
-  `multinom(useDouble = TRUE)` still returns a double.
 * `initMC()` now gives an error, rather than a warning, for input with fewer
   than two elements, and an error for input containing missing values.
 * `initMC()` keeps the type of its input, so logical multisets are permuted as

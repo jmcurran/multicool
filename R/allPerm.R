@@ -56,7 +56,7 @@ allPerm = function(mcObj, nThreads = 1){
     
     ## the number of permutations is the multinomial coefficient of the
     ## multiplicities, which lets the C++ code fill a matrix of the right size
-    nPerms = multinom(mcObj$set)
+    nPerms = multinom(mcObj$set, exact = TRUE)
     if(nPerms > .Machine$integer.max)
       stop("there are too many permutations (", as.character(nPerms),
            ") to return them all")

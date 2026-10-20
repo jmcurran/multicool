@@ -5,19 +5,24 @@
 \alias{S2}
 \title{Compute Stirling numbers of the second kind}
 \usage{
-Stirling2(n, k)
+Stirling2(n, k, exact = FALSE)
 
-S2(n, k)
+S2(n, k, exact = FALSE)
 }
 \arguments{
 \item{n}{A vector of one or more non-negative integers}
 
 \item{k}{A vector of one or more non-negative integers}
+
+\item{exact}{if \code{TRUE} the exact results are returned as big integers
+of class \code{bigz} from the \pkg{gmp} package.}
 }
 \value{
-A vector of Stirling numbers of the second kind, as exact big
-integers of class \code{bigz} from the \pkg{gmp} package. Use
-\code{as.numeric} to convert them to double precision if required.
+A vector of Stirling numbers of the second kind. They are always
+computed exactly. By default they are returned as doubles, so they are
+exact up to \eqn{2^{53}}{2^53} and correct to about 15 significant digits
+beyond that. If \code{exact} is \code{TRUE} they are exact \code{bigz}
+values.
 }
 \description{
 This function computes Stirling numbers of the second kind, \eqn{S(n,
@@ -42,8 +47,9 @@ S2(6, 1:6)
 ## returns S(6,1), S(5, 2), S(4, 3)
 S2(6:4, 1:3)
 
-## the values are exact, even when they are very large
+## exact = TRUE gives exact values, even when they are very large
 S2(100, 50)
+S2(100, 50, exact = TRUE)
 
 }
 \references{
