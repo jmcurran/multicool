@@ -60,8 +60,8 @@ Compositions, PhD thesis, University College Cork.
 Kelleher, J. and O'Sullivan, B. (2009), Generating All Partitions: A
 Comparison Of Two Encodings, \url{https://arxiv.org/abs/0909.2331}.
 
-Kelleher, J. (2010) Generating Integer
-Partitions,\url{https://jeromekelleher.net/tag/integer-partitions.html}.
+Kelleher, J. (2010) Generating Integer Partitions. Archived copy:
+\url{https://web.archive.org/web/20260423220351/https://jeromekelleher.net/generating-integer-partitions.html}.
 }
 \author{
 Jerome Kelleher (algorithm and Python version) and James M. Curran
