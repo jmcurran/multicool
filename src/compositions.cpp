@@ -5,7 +5,7 @@ using namespace Rcpp;
 using namespace std;
 
 // generate all integer partitions of n, as ascending compositions
-// [[Rcpp::export]]
+// [[Rcpp::export(rng = false)]]
 List generateCompositions(int n){
 	// Adapted from Python code and algorithm by
 	// Jerome Kelleher (c) 2009

@@ -15,18 +15,51 @@ List generateCompositions(int n);
 RcppExport SEXP _multicool_generateCompositions(SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     rcpp_result_gen = Rcpp::wrap(generateCompositions(n));
     return rcpp_result_gen;
 END_RCPP
 }
-
-RcppExport SEXP _rcpp_module_boot_Multicool();
+// mcCreate
+SEXP mcCreate(std::vector<int> x);
+RcppExport SEXP _multicool_mcCreate(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< std::vector<int> >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(mcCreate(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mcNextPerm
+SEXP mcNextPerm(SEXP mcObj, SEXP nSEXP);
+RcppExport SEXP _multicool_mcNextPerm(SEXP mcObjSEXP, SEXP nSEXPSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< SEXP >::type mcObj(mcObjSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nSEXP(nSEXPSEXP);
+    rcpp_result_gen = Rcpp::wrap(mcNextPerm(mcObj, nSEXP));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mcAllPerm
+SEXP mcAllPerm(SEXP ptr, int nPerms, SEXP elements, int nThreads);
+RcppExport SEXP _multicool_mcAllPerm(SEXP ptrSEXP, SEXP nPermsSEXP, SEXP elementsSEXP, SEXP nThreadsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< SEXP >::type ptr(ptrSEXP);
+    Rcpp::traits::input_parameter< int >::type nPerms(nPermsSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type elements(elementsSEXP);
+    Rcpp::traits::input_parameter< int >::type nThreads(nThreadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(mcAllPerm(ptr, nPerms, elements, nThreads));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_multicool_generateCompositions", (DL_FUNC) &_multicool_generateCompositions, 1},
-    {"_rcpp_module_boot_Multicool", (DL_FUNC) &_rcpp_module_boot_Multicool, 0},
+    {"_multicool_mcCreate", (DL_FUNC) &_multicool_mcCreate, 1},
+    {"_multicool_mcNextPerm", (DL_FUNC) &_multicool_mcNextPerm, 2},
+    {"_multicool_mcAllPerm", (DL_FUNC) &_multicool_mcAllPerm, 4},
     {NULL, NULL, 0}
 };
 

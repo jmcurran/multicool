@@ -1,4 +1,17 @@
-# multicool 1.0.1.003
+# multicool 1.0.1.005
+
+## New features
+
+* `allPerm()` has a new argument `nThreads` to generate large results (at
+  least 100,000 permutations) with several threads. It is about 1.4 to 1.9
+  times faster with 2 to 4 threads, and close to the speed at which the
+  result can be written to memory. Character and factor multisets always use
+  one thread. The default `nThreads = 1` works as before.
+* `nextPerm()` has a new argument `n` to return the next `n` permutations as
+  the rows of a matrix (fewer at the end, then `FALSE`). This makes iterating
+  through permutations much faster, while only holding `n` of them in
+  memory. For example, `nextPerm(m, 1000)` costs about 0.016 microseconds per
+  permutation, the same as `allPerm()`. The default `n = 1` works as before.
 
 ## Breaking changes
 
@@ -35,7 +48,12 @@
   15 to 54 times as long), and 1.0 to 1.5 times as long as 'arrangements'.
 * `initMC()` keeps integer input as integer, so `allPerm()` returns an
   integer matrix for integer input.
+* `nextPerm()` is about 9 times faster per call (about 0.9 rather than 8.4
+  microseconds), because the permutation object is now reached through an
+  external pointer rather than an Rcpp Module.
 * `nextPerm()` checks that its argument is an `mc` object.
+* Using an `mc` object after it has been saved and reloaded gives a clear
+  error asking you to call `initMC()` again.
 * Native routines are now registered, and documentation and `NAMESPACE` are
   generated with roxygen2.
 

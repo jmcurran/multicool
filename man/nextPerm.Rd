@@ -4,18 +4,27 @@
 \alias{nextPerm}
 \title{Return the next permutation of the multiset}
 \usage{
-nextPerm(mcObj)
+nextPerm(mcObj, n = 1)
 }
 \arguments{
 \item{mcObj}{an S3 object of class \code{mc} which must be created with
 \code{initMC}}
+
+\item{n}{the number of permutations to return. Asking for several at a
+time is much faster than calling \code{nextPerm} repeatedly, while still
+only holding \code{n} permutations in memory.}
 }
 \value{
-either a vector with the next permutation of the multiset or
-\code{FALSE} when all permutations have been returned. Because a permutation
-always has at least two elements, \code{isFALSE(nextPerm(m))} detects the end
-even when the multiset is logical. Calling \code{allPerm} does not change
-the position of \code{nextPerm}.
+If \code{n} is 1, either a vector with the next permutation of the
+multiset or \code{FALSE} when all permutations have been returned. Because a
+permutation always has at least two elements, \code{isFALSE(nextPerm(m))}
+detects the end even when the multiset is logical.
+
+If \code{n} is greater than 1, a matrix whose rows are the next \code{n}
+permutations, with fewer rows when fewer than \code{n} are left, or
+\code{FALSE} when all permutations have been returned.
+
+Calling \code{allPerm} does not change the position of \code{nextPerm}.
 }
 \description{
 This function returns the next permuation of the multiset if there is one.
@@ -37,9 +46,18 @@ nextPerm(m2)
 nextPerm(m2)
 ## and so on
 
+## process all 3,628,800 permutations of 1:10 in batches of 100,000,
+## without ever holding them all in memory
+m3 = initMC(1:10)
+nFixed = 0
+while(!isFALSE(p <- nextPerm(m3, 100000))){
+  nFixed = nFixed + sum(p[, 1] == 1)
+}
+nFixed ## the permutations that start with 1, i.e. 9!
+
 }
 \seealso{
-nextPerm
+\code{\link{initMC}}, \code{\link{allPerm}}
 }
 \author{
 James M. Curran

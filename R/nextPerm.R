@@ -6,13 +6,21 @@
 #' 
 #' @param mcObj an S3 object of class \code{mc} which must be created with
 #' \code{initMC}
-#' @return either a vector with the next permutation of the multiset or
-#' \code{FALSE} when all permutations have been returned. Because a permutation
-#' always has at least two elements, \code{isFALSE(nextPerm(m))} detects the end
-#' even when the multiset is logical. Calling \code{allPerm} does not change
-#' the position of \code{nextPerm}.
+#' @param n the number of permutations to return. Asking for several at a
+#' time is much faster than calling \code{nextPerm} repeatedly, while still
+#' only holding \code{n} permutations in memory.
+#' @return If \code{n} is 1, either a vector with the next permutation of the
+#' multiset or \code{FALSE} when all permutations have been returned. Because a
+#' permutation always has at least two elements, \code{isFALSE(nextPerm(m))}
+#' detects the end even when the multiset is logical.
+#' 
+#' If \code{n} is greater than 1, a matrix whose rows are the next \code{n}
+#' permutations, with fewer rows when fewer than \code{n} are left, or
+#' \code{FALSE} when all permutations have been returned.
+#' 
+#' Calling \code{allPerm} does not change the position of \code{nextPerm}.
 #' @author James M. Curran
-#' @seealso nextPerm
+#' @seealso \code{\link{initMC}}, \code{\link{allPerm}}
 #' @examples
 #' 
 #' x = c(1,1,2,2)
@@ -29,17 +37,26 @@
 #' nextPerm(m2)
 #' ## and so on
 #' 
+#' ## process all 3,628,800 permutations of 1:10 in batches of 100,000,
+#' ## without ever holding them all in memory
+#' m3 = initMC(1:10)
+#' nFixed = 0
+#' while(!isFALSE(p <- nextPerm(m3, 100000))){
+#'   nFixed = nFixed + sum(p[, 1] == 1)
+#' }
+#' nFixed ## the permutations that start with 1, i.e. 9!
+#' 
 #' @export nextPerm
-nextPerm = function(mcObj){
-  if(!is(mcObj, "mc")){
-    stop("mcObj must be of class mc")
-  }
-
-  r = mcObj$mc$nextPerm()
+nextPerm = function(mcObj, n = 1){
+  ## mcNextPerm checks mcObj and n itself, because checks in R would cost
+  ## several times as much as finding the permutation
+  r = mcNextPerm(mcObj, n)
   
-  if(r$b){
-    return(mcObj$elements[r$set])
-  }else{
+  if(is.null(r))
     return(FALSE)
-  }
+  
+  if(!.subset2(mcObj, "plain"))
+    r = mapCodes(r, .subset2(mcObj, "elements"))
+  
+  return(r)
 }

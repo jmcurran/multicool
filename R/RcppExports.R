@@ -5,3 +5,15 @@ generateCompositions <- function(n) {
     .Call(`_multicool_generateCompositions`, n)
 }
 
+mcCreate <- function(x) {
+    .Call(`_multicool_mcCreate`, x)
+}
+
+mcNextPerm <- function(mcObj, nSEXP) {
+    .Call(`_multicool_mcNextPerm`, mcObj, nSEXP)
+}
+
+mcAllPerm <- function(ptr, nPerms, elements, nThreads) {
+    .Call(`_multicool_mcAllPerm`, ptr, nPerms, elements, nThreads)
+}
+

@@ -19,8 +19,12 @@ each unique element of \code{x}}
 \item{elements}{ - the unique elements of \code{x}, so that
 \code{elements[set]} recovers the multiset being permuted}
 \item{length}{ - the length of the multiset }
-\item{mc}{ - a pointer to the internal C++ Multicool object. Users
-should not use this unless they really know what they are doing}
+\item{plain}{ - \code{TRUE} if \code{elements} is a plain integer, double,
+logical or character vector, which the C++ code can write directly}
+\item{mc}{ - an external pointer to the internal C++ object that holds the
+position of \code{nextPerm}. Users should not use this unless they really
+know what they are doing. It does not survive saving and reloading the
+object, so call \code{initMC} again in a new session}
 }
 \description{
 This function initialises the permutation object. It must be called before

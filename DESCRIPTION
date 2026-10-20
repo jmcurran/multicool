@@ -1,7 +1,7 @@
 Package: multicool
 Type: Package
 Title: Permutations of Multisets in Cool-Lex Order
-Version: 1.0.1.003
+Version: 1.0.1.005
 Authors@R: c(
     person("James", "Curran", email = "j.curran@auckland.ac.nz", role = c("aut", "cre")),
     person("Aaron", "Williams", role = "aut"),
@@ -14,5 +14,4 @@ License: GPL-2
 Depends: methods, Rcpp (>= 0.11.2)
 Imports: gmp
 LinkingTo: Rcpp
-RcppModules: Multicool
 Config/roxygen2/version: 8.0.0
