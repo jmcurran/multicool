@@ -1,4 +1,4 @@
-# multicool 1.0.1.005
+# multicool 1.0.2
 
 ## New features
 
