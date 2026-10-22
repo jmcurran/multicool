@@ -7,10 +7,10 @@ using namespace std;
 // generate all integer partitions of n, as ascending compositions
 // [[Rcpp::export(rng = false)]]
 List generateCompositions(int n){
-	// Adapted from Python code and algorithm by
-	// Jerome Kelleher (c) 2009, described in Kelleher and O'Sullivan (2009)
-	// https://doi.org/10.48550/arXiv.0909.2331 and (archived)
-	// https://web.archive.org/web/20260423220351/https://jeromekelleher.net/generating-integer-partitions.html
+	// A port of Jerome Kelleher's Python function accel_asc, which is included
+	// in this package as inst/python/accel_asc.py (with its provenance). The
+	// algorithm is described in Kelleher and O'Sullivan (2009)
+	// https://doi.org/10.48550/arXiv.0909.2331
 	if(n < 1)
 	  Rcpp::stop("n must be a positive integer");
 

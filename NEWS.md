@@ -1,3 +1,12 @@
+# multicool 1.0.2.001
+
+* Jerome Kelleher's original Python function `accel_asc`, from which
+  `genComp()`'s C++ code was ported, is now included with the package, with
+  a note of where it came from. Find it with
+  `system.file("python", "accel_asc.py", package = "multicool")`. His blog
+  is no longer online, so the help for `genComp()` refers to this copy
+  rather than to an archived web page.
+
 # multicool 1.0.2
 
 ## New features

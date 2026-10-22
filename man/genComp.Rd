@@ -58,10 +58,12 @@ Kelleher, J. (2005), Encoding Partitions As Ascending
 Compositions, PhD thesis, University College Cork.
 
 Kelleher, J. and O'Sullivan, B. (2009), Generating All Partitions: A
-Comparison Of Two Encodings, \url{https://arxiv.org/abs/0909.2331}.
+Comparison Of Two Encodings, \doi{10.48550/arXiv.0909.2331}.
 
-Kelleher, J. (2010) Generating Integer Partitions. Archived copy:
-\url{https://web.archive.org/web/20260423220351/https://jeromekelleher.net/generating-integer-partitions.html}.
+Kelleher, J. (2014) Generating Integer Partitions. Blog post, no longer
+online. Its Python function \code{accel_asc}, from which the C++ code in
+this package was ported, is included with the package:
+\code{system.file("python", "accel_asc.py", package = "multicool")}.
 }
 \author{
 Jerome Kelleher (algorithm and Python version) and James M. Curran
